@@ -1,10 +1,10 @@
-package nuricanozturk.dev.service.search.flight;
+package nuricanozturk.dev.service.flight.provider;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FlightSearchServiceApplicationTests
+class FlightProviderServiceApplicationTests
 {
 
     @Test

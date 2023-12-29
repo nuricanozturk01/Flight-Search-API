@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Repository
@@ -26,13 +26,16 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
                                                                 Pageable pageable);
 
     @Query("""
-            from Flight where arrivalAirport.city = :p_arrivalAirport and departureAirport.city = :p_departureAirport
-            and departureDate = :p_departureDate and returnDate = :p_returnDate\s
+            from Flight where
+            arrivalAirport.city = :p_arrivalAirport
+            and departureAirport.city = :p_departureAirport
+            and departureDate = :p_departureDate
+            and returnDate = :p_returnDate
             """)
     Page<Flight> findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween(@Param("p_arrivalAirport") String p_arrivalAirport,
                                                                                                     @Param("p_departureAirport") String p_departureAirport,
-                                                                                                    @Param("p_departureDate") LocalDateTime p_departureDate,
-                                                                                                    @Param("p_returnDate") LocalDateTime p_returnDate,
+                                                                                                    @Param("p_departureDate") LocalDate p_departureDate,
+                                                                                                    @Param("p_returnDate") LocalDate p_returnDate,
                                                                                                     Pageable pageable);
 
     @Query("""
@@ -41,6 +44,6 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
             """)
     Page<Flight> findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateBetween(@Param("p_arrivalAirport") String p_arrivalAirport,
                                                                                        @Param("p_departureAirport") String p_departureAirport,
-                                                                                       @Param("p_departureDate") LocalDateTime p_departureDate,
+                                                                                       @Param("p_departureDate") LocalDate p_departureDate,
                                                                                        Pageable pageable);
 }

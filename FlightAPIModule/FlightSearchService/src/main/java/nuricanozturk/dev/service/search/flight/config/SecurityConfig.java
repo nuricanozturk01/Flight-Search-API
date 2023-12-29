@@ -59,7 +59,7 @@ public class SecurityConfig
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers(antMatcher("/api-docs/**")).permitAll()
-                .requestMatchers("/api/v1/**", "api/v2/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/api/search/flight/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN");
     }
 }

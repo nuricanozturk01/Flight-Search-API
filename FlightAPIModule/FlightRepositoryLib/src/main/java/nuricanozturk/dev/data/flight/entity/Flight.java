@@ -2,7 +2,9 @@ package nuricanozturk.dev.data.flight.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -22,10 +24,16 @@ public class Flight
     private Airport arrivalAirport;
 
     @Column(name = "departure_date", nullable = false)
-    private LocalDateTime departureDate;
+    private LocalDate departureDate;
+
+    @Column(name = "departure_time", nullable = false)
+    private LocalTime departureTime;
+
+    @Column(name = "return_time")
+    private LocalTime returnTime;
 
     @Column(name = "return_date")
-    private LocalDateTime returnDate;
+    private LocalDate returnDate;
     private double price;
 
     public Flight()
@@ -53,13 +61,25 @@ public class Flight
             return this;
         }
 
-        public Builder withDepartureDate(LocalDateTime departureDate)
+        public Builder withDepartureTime(LocalTime departureTime)
+        {
+            m_flight.departureTime = departureTime;
+            return this;
+        }
+
+        public Builder withReturnTime(LocalTime returnTime)
+        {
+            m_flight.returnTime = returnTime;
+            return this;
+        }
+
+        public Builder withDepartureDate(LocalDate departureDate)
         {
             m_flight.departureDate = departureDate;
             return this;
         }
 
-        public Builder withReturnDate(LocalDateTime returnDate)
+        public Builder withReturnDate(LocalDate returnDate)
         {
             m_flight.returnDate = returnDate;
             return this;
@@ -92,14 +112,24 @@ public class Flight
         return arrivalAirport;
     }
 
-    public LocalDateTime getDepartureDate()
+    public LocalDate getDepartureDate()
     {
         return departureDate;
     }
 
-    public LocalDateTime getReturnDate()
+    public LocalDate getReturnDate()
     {
         return returnDate;
+    }
+
+    public LocalTime getDepartureTime()
+    {
+        return departureTime;
+    }
+
+    public LocalTime getReturnTime()
+    {
+        return returnTime;
     }
 
     public double getPrice()

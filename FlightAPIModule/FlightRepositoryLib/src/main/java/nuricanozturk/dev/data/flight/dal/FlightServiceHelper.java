@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -60,8 +60,8 @@ public class FlightServiceHelper
 
     public Page<Flight> findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween(String arrivalAirport,
                                                                                                            String departureAirport,
-                                                                                                           LocalDateTime departureDate,
-                                                                                                           LocalDateTime returnDate,
+                                                                                                           LocalDate departureDate,
+                                                                                                           LocalDate returnDate,
                                                                                                            int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
@@ -73,7 +73,7 @@ public class FlightServiceHelper
 
     public Page<Flight> findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateBetween(String arrivalAirport,
                                                                                               String departureAirport,
-                                                                                              LocalDateTime departureDate,
+                                                                                              LocalDate departureDate,
                                                                                               int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
@@ -99,5 +99,10 @@ public class FlightServiceHelper
     {
         return doForRepository(() -> m_customerRepository.findByUsername(username),
                 "FlightServiceHelper::findCustomerByUsername");
+    }
+
+    public Airport saveAirport(String airport)
+    {
+        return doForRepository(() -> m_airportRepository.save(new Airport(airport)), "FlightServiceHelper::saveAirport");
     }
 }

@@ -1,7 +1,6 @@
 package nuricanozturk.dev.service.search.flight.config;
 
 import nuricanozturk.dev.data.flight.repository.ICustomerRepository;
-import nuricanozturk.dev.service.search.flight.service.AuthenticationService;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class FlightAuthenticationProvider implements AuthenticationProvider
 {
-
     private final PasswordEncoder passwordEncoder;
 
     private final ICustomerRepository m_customerRepository;
@@ -36,8 +34,10 @@ public class FlightAuthenticationProvider implements AuthenticationProvider
             if (passwordEncoder.matches(pwd, user.get().getPassword()))
                 return new UsernamePasswordAuthenticationToken(username, pwd, user.get().getRoles());
 
-            else throw new BadCredentialsException("Invalid password!");
-        } else throw new BadCredentialsException("No user registered with this details!");
+            else throw new BadCredentialsException("Invalid username or password!");
+        }
+
+        throw new BadCredentialsException("No user registered with this details!");
     }
 
 
@@ -46,5 +46,4 @@ public class FlightAuthenticationProvider implements AuthenticationProvider
     {
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
-
 }

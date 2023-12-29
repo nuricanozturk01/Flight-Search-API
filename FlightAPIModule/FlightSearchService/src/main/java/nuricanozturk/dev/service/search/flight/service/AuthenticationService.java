@@ -60,6 +60,9 @@ public class AuthenticationService implements IAuthenticationService
 
     private LoginResponseDTO loginCallback(LoginDTO loginDTO)
     {
+        if (loginDTO == null)
+            throw new DataServiceException("AuthenticationRequest is null!");
+
         var auth = m_authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password()));
 
         if (!auth.isAuthenticated())
