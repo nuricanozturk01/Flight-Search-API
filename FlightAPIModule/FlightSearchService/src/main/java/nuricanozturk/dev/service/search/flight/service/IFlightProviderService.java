@@ -9,6 +9,6 @@ import java.util.List;
 @FeignClient(name = "flight-provider-service", url = "http://localhost:3435/api/generator/flight")
 public interface IFlightProviderService
 {
-    @GetMapping("/generate")
+    @GetMapping("/generate/${flight.provider.localization}")
     List<FlightDTO> generateFlights();
 }

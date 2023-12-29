@@ -6,12 +6,12 @@ import nuricanozturk.dev.data.flight.repository.IFlightRepository;
 import nuricanozturk.dev.service.search.flight.dto.FlightDTO;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @EnableScheduling
 @Service
@@ -28,20 +28,19 @@ public class SchedulerService
         m_flightProviderService = flightProviderService;
     }
 
-    @Scheduled(cron = "00 00 23 * * *", zone = "Europe/Istanbul")
+
+    @Schedules({
+            @Scheduled(cron = "00 22 00 * * *", zone = "Europe/Istanbul"),
+            @Scheduled(cron = "00 00 15 * * *", zone = "Europe/Istanbul")
+    })
     public void saveFlightSchedule()
     {
-        var flights = m_flightProviderService.generateFlights();
-        System.out.println(flights.stream().map(FlightDTO::toString).collect(Collectors.joining("\n")));
-
-
-        m_flightRepository.saveAll(flights.stream().map(this::toFlight).toList());
+        m_flightRepository.saveAll(m_flightProviderService.generateFlights().stream().map(this::toFlight).toList());
     }
 
     private Flight toFlight(FlightDTO flightDTO)
     {
         var departureAirport = m_flightServiceHelper.findAirportByCity(flightDTO.getDepartureAirport());
-
         var arrivalAirport = m_flightServiceHelper.findAirportByCity(flightDTO.getArrivalAirport());
 
         LocalDate returnDate = null;

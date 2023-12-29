@@ -1,6 +1,7 @@
 package nuricanozturk.dev.service.flight.provider.controller;
 
 import nuricanozturk.dev.service.flight.provider.dto.FlightDTO;
+import nuricanozturk.dev.service.flight.provider.dto.Localization;
 import nuricanozturk.dev.service.flight.provider.service.FlightGeneratorService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +20,15 @@ public class FlightGeneratorController
         m_flightGeneratorService = flightGeneratorService;
     }
 
-    @GetMapping("/generate")
+    @GetMapping("/generate/tr")
     public List<FlightDTO> generateFlights()
     {
-        return m_flightGeneratorService.provideFlights();
+        return m_flightGeneratorService.provideFlights(Localization.TR);
+    }
+
+    @GetMapping("/generate/random")
+    public List<FlightDTO> generateFlightsRandom()
+    {
+        return m_flightGeneratorService.provideFlights(Localization.RANDOM);
     }
 }

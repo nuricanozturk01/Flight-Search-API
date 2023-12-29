@@ -2,21 +2,23 @@ package nuricanozturk.dev.service.flight.provider.service;
 
 import net.datafaker.Faker;
 import nuricanozturk.dev.service.flight.provider.dto.FlightDTO;
+import nuricanozturk.dev.service.flight.provider.dto.Localization;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-import java.util.stream.IntStream;
+import java.util.function.Function;
 
+import static java.util.List.of;
+import static java.util.stream.IntStream.generate;
 import static java.util.stream.Stream.concat;
 import static java.util.stream.Stream.generate;
+import static nuricanozturk.dev.service.flight.provider.util.CityProvider.getRandomTurkishCity;
 
 @Configuration
 public class FlightGeneratorService
@@ -24,58 +26,21 @@ public class FlightGeneratorService
     private final Faker m_faker;
     private final Random m_random;
 
-    @Value("${flight.provider.min:50}")
-    private int m_min = 50;
+    @Value("${flight.provider.min}")
+    private int m_min;
 
-    @Value("${flight.provider.max:10}")
-    private int m_max = 100;
+    @Value("${flight.provider.minPrice}")
+    private double m_minPrice;
 
-    private static final List<String> TURKISH_CITIES = List.of(
-            "Adana", "Adıyaman", "Afyonkarahisar", "Ağrı", "Amasya",
-            "Ankara", "Antalya", "Artvin", "Aydın", "Balıkesir",
-            "Bilecik", "Bingöl", "Bitlis", "Bolu", "Burdur",
-            "Bursa", "Çanakkale", "Çankırı", "Çorum", "Denizli",
-            "Diyarbakır", "Edirne", "Elaziğ", "Erzincan", "Erzurum",
-            "Eskişehir", "Gaziantep", "Giresun", "Gümüşhane", "Hakkari",
-            "Hatay", "Isparta", "İçel (Mersin)", "İstanbul", "İzmir",
-            "Kars", "Kastamonu", "Kayseri", "Kırklareli", "Kırşehir",
-            "Kocaeli", "Konya", "Kütahya", "Malatya", "Manisa",
-            "Kahramanmaraş", "Mardin", "Muğla", "Muş", "Nevşehir",
-            "Niğde", "Ordu", "Rize", "Sakarya", "Samsun",
-            "Siirt", "Sinop", "Sivas", "Tekirdağ", "Tokat",
-            "Trabzon", "Tunceli", "Şanlıurfa", "Uşak", "Van",
-            "Yozgat", "Zonguldak", "Aksaray", "Bayburt", "Karaman",
-            "Kırıkkale", "Batman", "Şırnak", "Bartın", "Ardahan",
-            "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye",
-            "Düzce"
-    );
+    @Value("${flight.provider.max}")
+    private int m_max;
 
-    public static String getRandomTurkishCity(Random random)
-    {
-        String turkishCity = TURKISH_CITIES.get(random.nextInt(TURKISH_CITIES.size()));
-        return normalizeTurkishChars(turkishCity);
-    }
+    @Value("${flight.provider.maxPrice}")
+    private double m_maxPrice;
 
-    private static String normalizeTurkishChars(String turkishText)
-    {
-        var normalizedText = Normalizer.normalize(turkishText, Normalizer.Form.NFD);
-        var pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(normalizedText)
-                .replaceAll("")
-                .replace('ı', 'i')
-                .replace('İ', 'I')
-                .replace('ğ', 'g')
-                .replace('Ğ', 'G')
-                .replace('ü', 'u')
-                .replace('Ü', 'U')
-                .replace('ş', 's')
-                .replace('Ş', 'S')
-                .replace('ö', 'o')
-                .replace('Ö', 'O')
-                .replace('ç', 'c')
-                .replace('Ç', 'C')
-                .toUpperCase();
-    }
+    @Value("${flight.provider.range.date}")
+    private int m_dateRange;
+
 
     public FlightGeneratorService(Faker faker, Random random)
     {
@@ -83,13 +48,22 @@ public class FlightGeneratorService
         m_random = random;
     }
 
-    public List<FlightDTO> provideFlights()
+    private Function<Random, String> getRandomCity(Localization localization)
     {
-        var oneWayFlights = generate(this::generateFlightOneWay)
+        return switch (localization)
+        {
+            case TR -> str -> getRandomTurkishCity(m_random);
+            case RANDOM -> str -> m_faker.address().city();
+        };
+    }
+
+    public List<FlightDTO> provideFlights(Localization localization)
+    {
+        var oneWayFlights = generate(() -> generateFlightOneWay(getRandomCity(localization)))
                 .limit(m_random.nextInt(m_min, m_max))
                 .toList();
 
-        var roundTripFlights = generate(this::generateRoundTripFlight)
+        var roundTripFlights = generate(() -> generateRoundTripFlight(getRandomCity(localization)))
                 .limit(m_random.nextInt(m_min, m_max))
                 .flatMap(List::stream)
                 .toList();
@@ -98,14 +72,14 @@ public class FlightGeneratorService
     }
 
 
-    private FlightDTO generateFlightOneWay()
+    private FlightDTO generateFlightOneWay(Function<Random, String> randomCity)
     {
         var departureDate = generateDepartureDateTime();
-        var departureCity = getRandomTurkishCity(m_random);
-        var arrivalCity = generateCity(departureCity);
+        var departureCity = randomCity.apply(m_random);
+        var arrivalCity = generateCity(departureCity, randomCity);
 
-        FlightDTO flight = new FlightDTO();
-        flight.setPrice(m_faker.number().numberBetween(1_000, 10_000));
+        var flight = new FlightDTO();
+        flight.setPrice(m_faker.number().numberBetween((int) m_minPrice, (int) m_maxPrice));
         flight.setDepartureAirport(departureCity);
         flight.setArrivalAirport(arrivalCity.get());
         flight.setDepartureDate(departureDate);
@@ -117,24 +91,23 @@ public class FlightGeneratorService
 
     private LocalTime generateRandomLocalTime()
     {
-        int hour = m_random.nextInt(24);
-        int minute = 10 * m_random.nextInt(4);
-
-        return LocalTime.of(hour, minute, 0);
+        return LocalTime.of(m_random.nextInt(24), 10 * m_random.nextInt(5), 0);
     }
 
-    private List<FlightDTO> generateRoundTripFlight()
+
+    private List<FlightDTO> generateRoundTripFlight(Function<Random, String> randomCity)
     {
         var departureDate = generateDepartureDateTime();
         var returnDate = generateReturnDateTime(departureDate);
-        var departureCity = getRandomTurkishCity(m_random);
-        var returnCity = generateCity(departureCity);
-        var price = m_faker.number().numberBetween(1_000, 10_000);
+        var departureCity = randomCity.apply(m_random);
+        var returnCity = generateCity(departureCity, randomCity);
+        var price = m_faker.number().numberBetween((int) m_minPrice, (int) m_maxPrice);
         var time = generateRandomLocalTime();
-        if (returnCity.isEmpty())
-            generateRoundTripFlight();
 
-        FlightDTO departureFlight = new FlightDTO();
+        if (returnCity.isEmpty())
+            generateRoundTripFlight(randomCity);
+
+        var departureFlight = new FlightDTO();
         departureFlight.setPrice(price);
         departureFlight.setDepartureAirport(departureCity);
         departureFlight.setArrivalAirport(returnCity.get());
@@ -143,7 +116,7 @@ public class FlightGeneratorService
         departureFlight.setReturnDate(returnDate);
         departureFlight.setReturnTime(generateRandomLocalTime());
 
-        FlightDTO returnFlight = new FlightDTO();
+        var returnFlight = new FlightDTO();
         returnFlight.setPrice(price);
         returnFlight.setDepartureAirport(returnCity.get());
         returnFlight.setArrivalAirport(departureCity);
@@ -152,7 +125,7 @@ public class FlightGeneratorService
         returnFlight.setReturnDate(null);
         returnFlight.setReturnTime(null);
 
-        return List.of(departureFlight, returnFlight);
+        return of(departureFlight, returnFlight);
     }
 
 
@@ -166,21 +139,11 @@ public class FlightGeneratorService
         return departureDateTime.plusDays(m_faker.number().numberBetween(1, 20));
     }
 
-    private Optional<String> generateCity(String city)
+    private Optional<String> generateCity(String city, Function<Random, String> randomCity)
     {
-        return IntStream.generate(() -> 0)
-                .mapToObj(i -> getRandomTurkishCity(m_random))
+        return generate(() -> 0)
+                .mapToObj(i -> randomCity.apply(m_random))
                 .filter(c -> !c.equals(city))
                 .findFirst();
     }
-
-    public static void main(String[] args)
-    {
-        var faker = new Faker();
-        var random = new Random();
-        var flightGeneratorService = new FlightGeneratorService(faker, random);
-        var flights = flightGeneratorService.provideFlights();
-        System.out.println(flights);
-    }
-
 }
