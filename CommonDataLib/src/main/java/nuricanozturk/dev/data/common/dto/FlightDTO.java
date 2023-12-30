@@ -6,9 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
 
 public class FlightDTO
 {
+    @JsonProperty("flight_number")
+    private UUID id;
     @JsonProperty("departure_airport")
     private String departureAirport;
     @JsonProperty("arrival_airport")
@@ -32,9 +36,11 @@ public class FlightDTO
     @JsonProperty("return_flight")
     private FlightDTO returnFlight;
 
+
     public FlightDTO()
     {
     }
+
 
     public FlightDTO getReturnFlight()
     {
@@ -114,6 +120,16 @@ public class FlightDTO
     public void setReturnTime(LocalTime returnTime)
     {
         this.returnTime = returnTime;
+    }
+
+    public UUID getId()
+    {
+        return id;
+    }
+
+    public void setId(UUID id)
+    {
+        this.id = id;
     }
 
     @Override

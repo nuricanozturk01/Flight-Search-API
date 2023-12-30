@@ -69,10 +69,10 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
             and returnDate = :p_returnDate
             """)
     Page<Flight> findFlightsByFromAndToLocationAndDate(@Param("p_arrivalAirport") String p_arrivalAirport,
-                                                                                                    @Param("p_departureAirport") String p_departureAirport,
-                                                                                                    @Param("p_departureDate") LocalDate p_departureDate,
-                                                                                                    @Param("p_returnDate") LocalDate p_returnDate,
-                                                                                                    Pageable pageable);
+                                                       @Param("p_departureAirport") String p_departureAirport,
+                                                       @Param("p_departureDate") LocalDate p_departureDate,
+                                                       @Param("p_returnDate") LocalDate p_returnDate,
+                                                       Pageable pageable);
 
     /**
      * Finds flights by arrival and departure airport cities and a specific departure date.
@@ -89,9 +89,9 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
             and departureDate = :p_departureDate\s
             """)
     Page<Flight> findFlightsByFromAndToAndDateBetween(@Param("p_arrivalAirport") String p_arrivalAirport,
-                                                                                       @Param("p_departureAirport") String p_departureAirport,
-                                                                                       @Param("p_departureDate") LocalDate p_departureDate,
-                                                                                       Pageable pageable);
+                                                      @Param("p_departureAirport") String p_departureAirport,
+                                                      @Param("p_departureDate") LocalDate p_departureDate,
+                                                      Pageable pageable);
 
     /**
      * Finds flights by arrival airport and departure airport within a specified date range.
@@ -134,10 +134,10 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
      * @return A page of flights matching the specified criteria.
      */
     @Query("""
-            from Flight where departureAirport.city = :departureAirport
-            and departureDate between :departureDate and :returnDate
+            from Flight as f where f.departureAirport.city = :departureAirport
+            and f.departureDate between :departureDate and :returnDate
             """)
-    Page<Flight> findFlightsByDepartureAirportAndDepartureDateBetween(String departureAirport,
+    Page<Flight> findFlightsByDepartureAirportAndDepartureDateBetween(@Param("departureAirport") String departureAirport,
                                                                       @Param("departureDate") LocalDate departureDate,
                                                                       @Param("returnDate") LocalDate returnDate,
                                                                       Pageable pageable);
@@ -156,11 +156,11 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
      * Finds flights departing from a specific airport on a specific date.
      *
      * @param departureAirport The departure airport entity.
-     * @param localDate        The specific date of departure.
+     * @param departureDate    The specific date of departure.
      * @return A page of flights departing from the specified airport on the specified date.
      */
     @Query("""
-             from Flight where departureAirport.city = :departureAirport and departureDate = :localDate
+             from Flight as f where f.departureAirport.city = :departureAirport and f.departureDate = :departureDate
             """)
     Page<Flight> findFlightsByDepartureAirportAndDepartureDate(String departureAirport, LocalDate departureDate, Pageable pageable);
 
@@ -268,9 +268,8 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
             and ((departureDate between :p_startDate and :p_endDate) or (returnDate between :p_startDate and :p_endDate))
             and price between :p_minPrice and :p_maxPrice
             """)
-    Page<Flight> findByDepartureAirportCityAndArrivalAirportCityAndDepartureDateBetweenAndReturnDateBetweenAndPriceBetween(
-            @Param("p_departureAirport") String departureAirport, @Param("p_arrivalAirport") String arrivalAirport,
-            @Param("p_startDate") LocalDate startDate, @Param("p_endDate") LocalDate endDate,
-            @Param("p_minPrice") double minPrice, @Param("p_maxPrice") double maxPrice,
-            Pageable pageable);
+    Page<Flight> findByAllAirportAndAllDateAndPriceBetween(@Param("p_departureAirport") String departureAirport, @Param("p_arrivalAirport") String arrivalAirport,
+                                                           @Param("p_startDate") LocalDate startDate, @Param("p_endDate") LocalDate endDate,
+                                                           @Param("p_minPrice") double minPrice, @Param("p_maxPrice") double maxPrice,
+                                                           Pageable pageable);
 }

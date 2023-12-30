@@ -5,7 +5,7 @@ import java.util.List;
 
 public class FlightsResponseDTO
 {
-    private List<FlightResponseDTO> flights;
+    private final List<FlightResponseDTO> flights;
 
     public FlightsResponseDTO()
     {

@@ -226,15 +226,12 @@ public class FlightServiceHelper
     }
 
 
-    public Page<Flight> findByAirportAndDepartureDateAndPriceBetween(String departureAirport, String arrivalAirport,
-                                                                     LocalDate startDate, LocalDate endDate,
-                                                                     double minPrice, double maxPrice,
-                                                                     int page)
+    public Page<Flight> findByAllAirportAndAllDateAndPriceBetween(String from, String to, LocalDate start, LocalDate end,
+                                                                  double minPrice, double maxPrice, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
 
-        return doForRepository(() -> m_flightRepository.findByDepartureAirportCityAndArrivalAirportCityAndDepartureDateBetweenAndReturnDateBetweenAndPriceBetween
-                        (departureAirport, arrivalAirport, startDate, endDate, minPrice, maxPrice, pageable),
-                "FlightServiceHelper::findByDepartureAirportCityAndArrivalAirportCityAndDepartureDateBetweenAndReturnDateBetweenAndPriceBetween");
+        return doForRepository(() -> m_flightRepository.findByAllAirportAndAllDateAndPriceBetween(from, to, start, end, minPrice, maxPrice, pageable),
+                "FlightServiceHelper::findByAirportAndDepartureDateAndPriceBetween");
     }
 }

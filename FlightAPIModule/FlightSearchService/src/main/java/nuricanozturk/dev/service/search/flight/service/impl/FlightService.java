@@ -76,9 +76,9 @@ public class FlightService
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsByFromAndToLocationAndDate", dto.page());
     }
 
-    public ResponseDTO findFlightsByFromAndToAndDateBetween(String arrivalAirport, String departureAirport, LocalDate departureDate, int page)
+    public ResponseDTO findFlightsByFromAndToAndDateBetween(String from, String to, LocalDate date, int page)
     {
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByFromAndToAndDateBetween(convert(arrivalAirport), convert(departureAirport), departureDate, page);
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByFromAndToAndDateBetween(convert(from), convert(to), date, page);
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsByFromAndToAndDateBetween", page);
     }
@@ -92,17 +92,17 @@ public class FlightService
     }
 
 
-    public ResponseDTO findFlightsByDepartureDateBetween(LocalDate startDate, LocalDate endDate, int page)
+    public ResponseDTO findFlightsByDepartureDateBetween(LocalDate start, LocalDate end, int page)
     {
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByDepartureDateBetween(startDate, endDate, page);
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByDepartureDateBetween(start, end, page);
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsByDepartureDateBetween", page);
     }
 
 
-    public ResponseDTO findFlightsByDepartureAirportAndDepartureDateBetween(String from, LocalDate startDate, LocalDate endDate, int page)
+    public ResponseDTO findFlightsByDepartureAirportAndDepartureDateBetween(String from, LocalDate start, LocalDate end, int page)
     {
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByDepartureAirportAndDepartureDateBetween(convert(from), startDate, endDate, page);
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByDepartureAirportAndDepartureDateBetween(convert(from), start, end, page);
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsByDepartureAirportAndDepartureDateBetween", page);
     }
@@ -116,9 +116,9 @@ public class FlightService
     }
 
 
-    public ResponseDTO findFlightsByDepartureAirportAndDepartureDate(String from, LocalDate localDate, int page)
+    public ResponseDTO findFlightsByDepartureAirportAndDepartureDate(String from, LocalDate date, int page)
     {
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByDepartureAirportAndDepartureDate(convert(from), localDate, page);
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByDepartureAirportAndDepartureDate(convert(from), date, page);
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsByDepartureAirportAndDepartureDate", page);
     }
@@ -132,25 +132,26 @@ public class FlightService
     }
 
 
-    public ResponseDTO findFlightsByFromAndToAndFromDate(String from, String to, LocalDate departureDate, int page)
+    public ResponseDTO findFlightsByFromAndToAndFromDate(String from, String to, LocalDate date, int page)
     {
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByFromAndToAndFromDate(convert(from), convert(to), departureDate, page);
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByFromAndToAndFromDate(convert(from), convert(to), date, page);
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsByFromAndToAndFromDate", page);
     }
 
 
-    public ResponseDTO findCheapestFlightsWithinRange(String from, String to, LocalDate startDate, LocalDate endDate, int page)
+    public ResponseDTO findCheapestFlightsWithinRange(String from, String to, LocalDate start, LocalDate end, int page)
     {
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findCheapestFlightsWithinRange(convert(from), convert(to), startDate, endDate, page);
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findCheapestFlightsWithinRange(convert(from), convert(to), start, end, page);
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findCheapestFlightsWithinRange", page);
     }
 
 
-    public ResponseDTO findFlightsCityDateRange(String city, LocalDate startDate, LocalDate endDate, int page)
-    {
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsCityDateRange(convert(city), startDate, endDate, page);
+    public ResponseDTO findFlightsCityDateRange(String city, LocalDate start, LocalDate end, int page)
+    {   //city is departure city or arrival city
+
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsCityDateRange(convert(city), start, end, page);
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsCityDateRange", page);
     }
@@ -182,5 +183,16 @@ public class FlightService
             return new FlightResponseDTO(flightInfoDTO, empty());
 
         return new FlightResponseDTO(flightInfoDTO, of(m_flightMapper.toFlightInfoDTO(flightInfoDTO.returnFlight())));
+    }
+
+    public ResponseDTO findByAllAirportAndAllDateAndPriceBetween(SearchFullQualifiedComparePriceDTO dto)
+    {// All means contains tuples (departureAirport, arrivalAirport, departureDate, returnDate, minPrice, maxPrice...)
+
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findByAllAirportAndAllDateAndPriceBetween(
+                convert(dto.departureAirport()), convert(dto.arrivalAirport()),
+                dto.departureDate(), dto.returnDate().get(),
+                dto.minPrice(), dto.maxPrice(), dto.page());
+
+        return toFlightsResponseDTO(flightSupplier, "FlightService::findByAllAirportAndAllDateAndPriceBetween", dto.page());
     }
 }
