@@ -32,6 +32,11 @@ public class FlightServiceHelper
         m_customerRepository = customerRepository;
     }
 
+    public Flight saveFlight(Flight flight)
+    {
+        return doForRepository(() -> m_flightRepository.save(flight), "FlightServiceHelper::saveFlight");
+    }
+
     public Page<Flight> findFlightsByArrivalAirport(String arrivalAirport, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
@@ -103,6 +108,39 @@ public class FlightServiceHelper
 
     public Airport saveAirport(String airport)
     {
+        if (m_airportRepository.findByCity(airport).isPresent())
+            return m_airportRepository.findByCity(airport).get();
+
         return doForRepository(() -> m_airportRepository.save(new Airport(airport)), "FlightServiceHelper::saveAirport");
+    }
+
+    public Airport saveAirport(Airport airport)
+    {
+        return doForRepository(() -> m_airportRepository.save(airport), "FlightServiceHelper::saveAirport");
+    }
+
+    public void deleteFlightById(UUID flightId)
+    {
+        doForRepository(() -> m_flightRepository.deleteById(flightId), "FlightServiceHelper::deleteFlightById");
+    }
+
+    public void deleteAirportById(UUID airportId)
+    {
+        doForRepository(() -> m_airportRepository.deleteById(airportId), "FlightServiceHelper::deleteAirportById");
+    }
+
+    public Optional<Airport> findAirportById(UUID airportId)
+    {
+        return doForRepository(() -> m_airportRepository.findById(airportId), "FlightServiceHelper::findAirportById");
+    }
+
+    public Page<Flight> findAllFlights(int page)
+    {
+        return doForRepository(() -> m_flightRepository.findAll(PageRequest.of(page - 1, 15)), "FlightServiceHelper::findAllFlights");
+    }
+
+    public Page<Airport> findAllAirports(int page)
+    {
+        return doForRepository(() -> m_airportRepository.findAll(PageRequest.of(page - 1, 15)), "FlightServiceHelper::findAllAirports");
     }
 }

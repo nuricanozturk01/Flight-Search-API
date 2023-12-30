@@ -68,6 +68,7 @@ public class AuthenticationService implements IAuthenticationService
         if (!auth.isAuthenticated())
             throw new DataServiceException("Invalid username or password!");
 
+
         return new LoginResponseDTO(true, "User login operation is successful", JwtUtil.generateToken(loginDTO.username()));
     }
 

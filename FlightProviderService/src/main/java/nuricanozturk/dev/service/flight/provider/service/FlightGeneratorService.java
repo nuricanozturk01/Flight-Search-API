@@ -38,10 +38,6 @@ public class FlightGeneratorService
     @Value("${flight.provider.maxPrice}")
     private double m_maxPrice;
 
-    @Value("${flight.provider.range.date}")
-    private int m_dateRange;
-
-
     public FlightGeneratorService(Faker faker, Random random)
     {
         m_faker = faker;

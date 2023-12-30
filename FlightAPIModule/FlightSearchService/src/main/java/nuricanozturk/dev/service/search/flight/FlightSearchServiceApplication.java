@@ -2,6 +2,11 @@ package nuricanozturk.dev.service.search.flight;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import nuricanozturk.dev.data.flight.entity.Customer;
+import nuricanozturk.dev.data.flight.entity.Role;
+import nuricanozturk.dev.data.flight.repository.ICustomerRepository;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -9,6 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static nuricanozturk.dev.data.flight.util.RepositoryBeanName.AIRPORT_REPOSITORY_BEAN_NAME;
 import static nuricanozturk.dev.service.search.flight.util.FlightServiceBeanName.FLIGHT_SERVICE_BEAN_NAME;
@@ -25,12 +31,31 @@ import static nuricanozturk.dev.service.search.flight.util.FlightServiceBeanName
         bearerFormat = "JWT",
         scheme = "bearer"
 )
-public class FlightSearchServiceApplication
+public class FlightSearchServiceApplication implements ApplicationRunner
 {
+    private final ICustomerRepository m_customerRepository;
+    private final PasswordEncoder m_passwordEncoder;
+
+    public FlightSearchServiceApplication(ICustomerRepository customerRepository, PasswordEncoder passwordEncoder)
+    {
+        m_customerRepository = customerRepository;
+        m_passwordEncoder = passwordEncoder;
+    }
 
     public static void main(String[] args)
     {
         SpringApplication.run(FlightSearchServiceApplication.class, args);
     }
 
+    @Override
+    public void run(ApplicationArguments args) throws Exception
+    {
+        if (m_customerRepository.findByUsername("admin").isEmpty())
+        {
+            var admin = new Customer("admin", m_passwordEncoder.encode("admin_pass123"), "Admin", "Admin", "Admin",
+                    "nuricanozturk01@gmail.com", Role.ROLE_ADMIN);
+            m_customerRepository.save(admin);
+        }
+        System.out.println("Admin username: " + "admin" + " Admin Password:" + "admin_pass123");
+    }
 }

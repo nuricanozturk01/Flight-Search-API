@@ -3,7 +3,6 @@ package nuricanozturk.dev.data.flight.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -135,5 +134,57 @@ public class Flight
     public double getPrice()
     {
         return price;
+    }
+
+    public void setId(UUID id)
+    {
+        this.id = id;
+    }
+
+    public void setDepartureAirport(Airport departureAirport)
+    {
+        this.departureAirport = departureAirport;
+    }
+
+    public void setArrivalAirport(Airport arrivalAirport)
+    {
+        this.arrivalAirport = arrivalAirport;
+    }
+
+    public void setDepartureDate(LocalDate departureDate)
+    {
+        this.departureDate = departureDate;
+    }
+
+    public void setDepartureTime(LocalTime departureTime)
+    {
+        this.departureTime = departureTime;
+    }
+
+    public void setReturnTime(LocalTime returnTime)
+    {
+        this.returnTime = returnTime;
+    }
+
+    public void setReturnDate(LocalDate returnDate)
+    {
+        this.returnDate = returnDate;
+    }
+
+    public void setPrice(double price)
+    {
+        this.price = price;
+    }
+
+    public Flight update(Flight flight, Airport departureAirport, Airport arrivalAirport)
+    {
+        this.departureAirport = departureAirport;
+        this.arrivalAirport = arrivalAirport;
+        this.departureDate = flight.departureDate;
+        this.departureTime = flight.departureTime;
+        this.returnTime = flight.returnTime;
+        this.returnDate = flight.returnDate;
+        this.price = flight.price;
+        return this;
     }
 }

@@ -33,13 +33,8 @@ public final class CityProvider
 
     public static String getRandomTurkishCity(Random random)
     {
-        String turkishCity = TURKISH_CITIES.get(random.nextInt(TURKISH_CITIES.size()));
-        return normalizeTurkishChars(turkishCity);
-    }
-
-    private static String normalizeTurkishChars(String turkishText)
-    {
-        var normalizedText = Normalizer.normalize(turkishText, Normalizer.Form.NFD);
+        var turkishCity = TURKISH_CITIES.get(random.nextInt(TURKISH_CITIES.size()));
+        var normalizedText = Normalizer.normalize(turkishCity, Normalizer.Form.NFD);
         var pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(normalizedText)
                 .replaceAll("")

@@ -6,6 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import nuricanozturk.dev.service.search.flight.service.AuthenticationService;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -27,25 +29,34 @@ public class JwtAuthFilter extends OncePerRequestFilter
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
     {
-        var authenticationHeader = request.getHeader("Authorization");
 
-        if (authenticationHeader != null && authenticationHeader.startsWith("Bearer "))
+        try
         {
-            var token = authenticationHeader.substring(7);
-            var username = JwtUtil.extractUsername(token);
+            var authenticationHeader = request.getHeader("Authorization");
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null)
+            if (authenticationHeader != null && authenticationHeader.startsWith("Bearer "))
             {
-                var user = m_authenticationService.findCustomerByUsername(username);
+                var token = authenticationHeader.substring(7);
+                var username = JwtUtil.extractUsername(token);
 
-                if (JwtUtil.isTokenValid(token, username) && username.equals(user.get().getUsername()))
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null)
                 {
-                    var authToken = new UsernamePasswordAuthenticationToken(user, null, user.get().getRoles());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                    var user = m_authenticationService.findCustomerByUsername(username);
+
+                    if (JwtUtil.isTokenValid(token, username) && username.equals(user.get().getUsername()))
+                    {
+                        var authToken = new UsernamePasswordAuthenticationToken(user, null, user.get().getRoles());
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
             }
+            filterChain.doFilter(request, response);
+        } catch (AccessDeniedException | BadCredentialsException exception)
+        {
+            response.setStatus(403);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"" + exception.getMessage() + "\"}");
         }
-        filterChain.doFilter(request, response);
     }
 }

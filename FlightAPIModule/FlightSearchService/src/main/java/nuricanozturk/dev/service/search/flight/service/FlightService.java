@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,10 +42,13 @@ public class FlightService
                 "FlightServiceHelper::findFlightsByDepartureAirport");
     }
 
-    public Page<Flight> findFlightsByArrivalAirportAndDepartureAirport(String arrivalAirport, String departureAirport, int page)
+    public ResponseDTO findFlightsByArrivalAirportAndDepartureAirport(String departureAirport, String arrivalAirport, int page)
     {
-        return doForDataService(() -> m_flightServiceHelper.findFlightsByArrivalAirportAndDepartureAirport(arrivalAirport, departureAirport, page),
+        var flights = m_flightServiceHelper.findFlightsByArrivalAirportAndDepartureAirport(arrivalAirport, departureAirport, page);
+        var flightsDTO = doForDataService(() -> m_flightMapper.toFlightsInfoDTO(toList(flights.getContent(), m_flightMapper::toFlightInfoDTO)),
                 "FlightServiceHelper::findFlightsByArrivalAirportAndDepartureAirport");
+
+        return new ResponseDTO(page, flights.getTotalPages(), flightsDTO.flights().size(), "Success", flightsDTO);
     }
 
 

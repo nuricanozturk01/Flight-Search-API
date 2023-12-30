@@ -8,6 +8,4 @@ import org.mapstruct.Mapper;
 public interface IUserRegisterMapper
 {
     Customer toCustomer(RegisterDTO registerDTO);
-
-    RegisterDTO toRegisterDTO(Customer customer);
 }

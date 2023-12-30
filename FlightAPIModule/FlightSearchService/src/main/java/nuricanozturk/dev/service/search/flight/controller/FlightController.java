@@ -5,10 +5,7 @@ import nuricanozturk.dev.service.search.flight.dto.ErrorMessage;
 import nuricanozturk.dev.service.search.flight.dto.request.SearchFullQualifiedDTO;
 import nuricanozturk.dev.service.search.flight.service.FlightService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static callofproject.dev.library.exception.util.ExceptionUtil.subscribe;
 import static org.springframework.http.ResponseEntity.badRequest;
@@ -33,4 +30,19 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    @GetMapping("/location")
+    public ResponseEntity<Object> findFlightsByLocations(@RequestParam("from") String fromCity,
+                                                         @RequestParam("to") String toCity,
+                                                         @RequestParam(value = "page", required = false, defaultValue = "1") int page)
+    {
+        return subscribe(() -> ok(m_flightService.findFlightsByArrivalAirportAndDepartureAirport(fromCity, toCity, page)),
+                ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Object> find()
+    {
+        return subscribe(() -> ok(m_flightService.findFlightsByArrivalAirportAndDepartureAirport("Istanbul", "Ankara", 1)),
+                ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
+    }
 }

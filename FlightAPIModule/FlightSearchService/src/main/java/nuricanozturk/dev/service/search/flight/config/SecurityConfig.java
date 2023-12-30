@@ -1,6 +1,7 @@
 package nuricanozturk.dev.service.search.flight.config;
 
 
+import callofproject.dev.service.jwt.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,6 +35,7 @@ public class SecurityConfig
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception
     {
+
         return security
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(this::authorizationRequests)

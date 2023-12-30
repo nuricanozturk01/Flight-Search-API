@@ -1,13 +1,18 @@
 package nuricanozturk.dev.service.search.flight.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record ResponseDTO(int page,
-                          @JsonProperty("total_page")
-                          int totalPage,
-                          @JsonProperty("total_element")
-                          int totalElement,
-                          String message,
-                          Object data)
+public record ResponseDTO(
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        Integer page,
+        @JsonProperty("total_page")
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        Integer totalPage,
+        @JsonProperty("total_element")
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        Integer totalElement,
+        String message,
+        Object data)
 {
 }
