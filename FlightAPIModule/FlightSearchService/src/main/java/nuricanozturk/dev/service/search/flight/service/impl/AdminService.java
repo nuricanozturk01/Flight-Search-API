@@ -1,6 +1,7 @@
 package nuricanozturk.dev.service.search.flight.service.impl;
 
 import callofproject.dev.library.exception.service.DataServiceException;
+import nuricanozturk.dev.data.common.util.pair.Pair;
 import nuricanozturk.dev.data.flight.dal.FlightServiceHelper;
 import nuricanozturk.dev.data.flight.entity.Airport;
 import nuricanozturk.dev.data.flight.entity.Flight;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static callofproject.dev.library.exception.util.CopDataUtil.doForDataService;
+import static nuricanozturk.dev.service.search.flight.util.StringNormalization.convert;
 
 /**
  * AdminService provides administrative functionalities for managing flights and airports.
@@ -51,8 +53,8 @@ public class AdminService implements IAdminService
     @Override
     public ResponseDTO createFlight(CreateFlightDTO createFlightDTO)
     {
-        var departureAirport = m_flightServiceHelper.saveAirport(createFlightDTO.departureAirport());
-        var arrivalAirport = m_flightServiceHelper.saveAirport(createFlightDTO.arrivalAirport());
+        var departureAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.departureAirport()));
+        var arrivalAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.arrivalAirport()));
 
         var flight = new Flight.Builder()
                 .withArrivalAirport(arrivalAirport)
@@ -62,6 +64,7 @@ public class AdminService implements IAdminService
                 .withReturnDate(createFlightDTO.returnDate().orElse(null))
                 .withReturnTime(createFlightDTO.returnTime().orElse(null))
                 .withPrice(createFlightDTO.price())
+                .withReturnFlight(createFlightDTO.returnFlight().orElse(null))
                 .build();
 
         var savedFlight = doForDataService(() -> m_flightServiceHelper.saveFlight(flight), "AdminService::createFlight");
@@ -78,10 +81,31 @@ public class AdminService implements IAdminService
     @Override
     public void saveAllFlights(List<FlightDTO> flights)
     {
-        m_flightServiceHelper.saveAllFlights(flights.stream()
-                .map(this::toFlightForCreate)
-                .peek(s -> System.out.println(s.getDepartureAirport()))
-                .toList());
+        m_flightServiceHelper.saveAllFlights(flights.stream().map(this::toFlightForCreate).toList());
+    }
+
+    /**
+     * Creates a new flight based on the provided CreateFlightDTO.
+     *
+     * @param roundTripFlights the DTO containing the details of the flight to be created
+     * @throws DataServiceException if there's an issue during the flight creation process
+     */
+    @Override
+    public void saveAllFlightsPair(List<Pair<FlightDTO, FlightDTO>> roundTripFlights)
+    {
+        for (var flight : roundTripFlights)
+        {
+            var departureFlight = flight.getFirst();
+            var returnFlight = flight.getSecond();
+
+            var savedReturnFlight = toFlightForCreate(returnFlight);
+            m_flightServiceHelper.saveFlight(savedReturnFlight);
+
+            var savedDepartureFlight = toFlightForCreate(departureFlight);
+            savedDepartureFlight.setReturnFlight(savedReturnFlight);
+
+            m_flightServiceHelper.saveFlight(savedDepartureFlight);
+        }
     }
 
     /**
@@ -94,7 +118,7 @@ public class AdminService implements IAdminService
     @Override
     public ResponseDTO createAirport(CreateAirportDTO createAirportDTO)
     {
-        var savedAirport = doForDataService(() -> m_flightServiceHelper.saveAirport(createAirportDTO.city()), "AdminService::createAirport");
+        var savedAirport = doForDataService(() -> m_flightServiceHelper.saveAirport(convert(createAirportDTO.city())), "AdminService::createAirport");
 
         return new ResponseDTO(null, null, null, "Success", savedAirport);
     }
@@ -111,8 +135,8 @@ public class AdminService implements IAdminService
     {
         var currentFlight = findFlightByIdIfExists(updateFlightDTO.id());
 
-        var departureAirport = m_flightServiceHelper.saveAirport(updateFlightDTO.departureAirport());
-        var arrivalAirport = m_flightServiceHelper.saveAirport(updateFlightDTO.arrivalAirport());
+        var departureAirport = m_flightServiceHelper.saveAirport(convert(updateFlightDTO.departureAirport()));
+        var arrivalAirport = m_flightServiceHelper.saveAirport(convert(updateFlightDTO.arrivalAirport()));
 
         var updatedFlightDTO = m_flightMapper.toFlight(updateFlightDTO, departureAirport, arrivalAirport, currentFlight.getId());
 
@@ -133,7 +157,7 @@ public class AdminService implements IAdminService
     {
         var currentAirport = findAirportByIdIfExists(updateAirportDTO.id());
 
-        currentAirport.setCity(updateAirportDTO.city());
+        currentAirport.setCity(convert(updateAirportDTO.city()));
 
         var updatedAirport = doForDataService(() -> m_flightServiceHelper.saveAirport(currentAirport), "AdminService::updateAirport");
 
@@ -247,8 +271,8 @@ public class AdminService implements IAdminService
      */
     private Flight toFlightForCreate(FlightDTO flightDTO)
     {
-        var departureAirport = m_flightServiceHelper.saveAirport(flightDTO.getDepartureAirport());
-        var arrivalAirport = m_flightServiceHelper.saveAirport(flightDTO.getArrivalAirport());
+        var departureAirport = m_flightServiceHelper.saveAirport(convert(flightDTO.getDepartureAirport()));
+        var arrivalAirport = m_flightServiceHelper.saveAirport(convert(flightDTO.getArrivalAirport()));
 
         return new Flight.Builder()
                 .withArrivalAirport(arrivalAirport)
@@ -257,6 +281,7 @@ public class AdminService implements IAdminService
                 .withDepartureDate(flightDTO.getDepartureDate())
                 .withReturnDate(flightDTO.getReturnDate() == null ? null : flightDTO.getReturnDate())
                 .withReturnTime(flightDTO.getReturnTime() == null ? null : flightDTO.getReturnTime())
+                .withReturnFlight(flightDTO.getReturnFlight() == null ? null : toFlightForCreate(flightDTO.getReturnFlight()))
                 .withPrice(flightDTO.getPrice())
                 .build();
     }

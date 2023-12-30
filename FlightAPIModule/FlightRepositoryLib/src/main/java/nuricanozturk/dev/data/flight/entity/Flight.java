@@ -13,11 +13,9 @@ public class Flight
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     @ManyToOne
     @JoinColumn(name = "departure_airport_id", nullable = false)
     private Airport departureAirport;
-
     @ManyToOne
     @JoinColumn(name = "arrival_airport_id", nullable = false)
     private Airport arrivalAirport;
@@ -33,6 +31,10 @@ public class Flight
 
     @Column(name = "return_date")
     private LocalDate returnDate;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "return_flight_id")
+    private Flight returnFlight;
     private double price;
 
     public Flight()
@@ -46,6 +48,12 @@ public class Flight
         public Builder()
         {
             m_flight = new Flight();
+        }
+
+        public Builder withReturnFlight(Flight returnFlight)
+        {
+            m_flight.returnFlight = returnFlight;
+            return this;
         }
 
         public Builder withDepartureAirport(Airport departureAirport)
@@ -174,6 +182,16 @@ public class Flight
     public void setPrice(double price)
     {
         this.price = price;
+    }
+
+    public Flight getReturnFlight()
+    {
+        return returnFlight;
+    }
+
+    public void setReturnFlight(Flight returnFlight)
+    {
+        this.returnFlight = returnFlight;
     }
 
     public Flight update(Flight flight, Airport departureAirport, Airport arrivalAirport)

@@ -1,6 +1,7 @@
 package nuricanozturk.dev.service.search.flight.service;
 
 import callofproject.dev.library.exception.service.DataServiceException;
+import nuricanozturk.dev.data.common.util.pair.Pair;
 import nuricanozturk.dev.service.search.flight.dto.FlightDTO;
 import nuricanozturk.dev.service.search.flight.dto.ResponseDTO;
 import nuricanozturk.dev.service.search.flight.dto.request.CreateAirportDTO;
@@ -94,4 +95,6 @@ public interface IAdminService
      * @throws DataServiceException if there's an issue during the flight creation process
      */
     void saveAllFlights(List<FlightDTO> flights);
+
+    void saveAllFlightsPair(List<Pair<FlightDTO, FlightDTO>> roundTripFlights);
 }

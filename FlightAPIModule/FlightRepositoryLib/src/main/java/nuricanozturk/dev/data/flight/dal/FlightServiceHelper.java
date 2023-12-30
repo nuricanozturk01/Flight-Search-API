@@ -33,6 +33,7 @@ public class FlightServiceHelper
         m_customerRepository = customerRepository;
     }
 
+
     public Flight saveFlight(Flight flight)
     {
         return doForRepository(() -> m_flightRepository.save(flight), "FlightServiceHelper::saveFlight");
@@ -148,5 +149,99 @@ public class FlightServiceHelper
     public void saveAllFlights(List<Flight> flights)
     {
         doForRepository(() -> m_flightRepository.saveAll(flights), "FlightServiceHelper::saveAllFlights");
+    }
+
+    public Page<Flight> findFlightsByDepartureAirportAndArrivalAirportAndDepartureDateBetween(String departureAirport, String arrivalAirport,
+                                                                                              LocalDate startDate, LocalDate endDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByDepartureAirportAndArrivalAirportAndDepartureDateBetween(departureAirport, arrivalAirport, startDate, endDate, pageable),
+                "FlightServiceHelper::findFlightsByDepartureAirportAndArrivalAirportAndDepartureDateBetween");
+    }
+
+
+    public Page<Flight> findFlightsByDepartureDateBetween(LocalDate startDate, LocalDate endDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByDepartureDateBetween(startDate, endDate, pageable),
+                "FlightServiceHelper::findFlightsByDepartureDateBetween");
+    }
+
+
+    public Page<Flight> findFlightsByDepartureAirportAndDepartureDateBetween(String departureAirport, LocalDate startDate, LocalDate endDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByDepartureAirportAndDepartureDateBetween(departureAirport, startDate, endDate, pageable),
+                "FlightServiceHelper::findFlightsByDepartureAirportAndDepartureDateBetween");
+    }
+
+
+    public Page<Flight> findFlightsByPriceBetween(double minPrice, double maxPrice, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByPriceBetween(minPrice, maxPrice, pageable),
+                "FlightServiceHelper::findFlightsByPriceBetween");
+    }
+
+
+    public Page<Flight> findFlightsByDepartureAirportAndDepartureDate(Airport departureAirport, LocalDate localDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByDepartureAirportAndDepartureDate(departureAirport, localDate, pageable),
+                "FlightServiceHelper::findFlightsByDepartureAirportAndDepartureDate");
+    }
+
+
+    public Page<Flight> findFlightsByArrivalAirportAndDepartureDate(Airport arrivalAirport, LocalDate localDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByArrivalAirportAndDepartureDate(arrivalAirport, localDate, pageable),
+                "FlightServiceHelper::findFlightsByArrivalAirportAndDepartureDate");
+    }
+
+
+    public Page<Flight> findFlightsByDepartureAirportAndArrivalAirportAndDepartureDate(Airport departureAirport, Airport arrivalAirport, LocalDate departureDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByDepartureAirportAndArrivalAirportAndDepartureDate(departureAirport, arrivalAirport, departureDate, pageable),
+                "FlightServiceHelper::findFlightsByDepartureAirportAndArrivalAirportAndDepartureDate");
+    }
+
+
+    public Page<Flight> findCheapestFlightsWithinRange(String departureAirport, String arrivalAirport, LocalDate startDate, LocalDate endDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findCheapestFlightsWithinRange(departureAirport, arrivalAirport, startDate, endDate, pageable),
+                "FlightServiceHelper::findCheapestFlightsWithinRange");
+    }
+
+
+    public Page<Flight> findFlightsCityDateRange(String city, LocalDate startDate, LocalDate endDate, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsCityDateRange(city, startDate, endDate, pageable),
+                "FlightServiceHelper::findFlightsCityDateRange");
+    }
+
+
+    public Page<Flight> findAllByDepartureDateAndPriceRange(String departureAirport, String arrivalAirport, LocalDate startDate, LocalDate endDate,
+                                                            double minPrice, double maxPrice, int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+        return doForRepository(() -> m_flightRepository.findFlightsByDepartureDateBetweenAndPriceRange(departureAirport, arrivalAirport, startDate, endDate, minPrice, maxPrice, pageable),
+                "FlightServiceHelper::findFlightsByDateAndPriceRange");
+    }
+
+
+    public Page<Flight> findByAirportAndDepartureDateAndPriceBetween(String departureAirport, String arrivalAirport,
+                                                                     LocalDate startDate, LocalDate endDate,
+                                                                     double minPrice, double maxPrice,
+                                                                     int page)
+    {
+        var pageable = PageRequest.of(page - 1, 15);
+
+        return doForRepository(() -> m_flightRepository.findByDepartureAirportCityAndArrivalAirportCityAndDepartureDateBetweenAndReturnDateBetweenAndPriceBetween
+                        (departureAirport, arrivalAirport, startDate, endDate, minPrice, maxPrice, pageable),
+                "FlightServiceHelper::findByDepartureAirportCityAndArrivalAirportCityAndDepartureDateBetweenAndReturnDateBetweenAndPriceBetween");
     }
 }

@@ -1,5 +1,6 @@
 package nuricanozturk.dev.service.flight.provider.controller;
 
+import nuricanozturk.dev.data.common.util.pair.Pair;
 import nuricanozturk.dev.service.flight.provider.dto.FlightDTO;
 import nuricanozturk.dev.service.flight.provider.dto.Localization;
 import nuricanozturk.dev.service.flight.provider.service.FlightGeneratorService;
@@ -20,15 +21,29 @@ public class FlightGeneratorController
         m_flightGeneratorService = flightGeneratorService;
     }
 
-    @GetMapping("/generate/tr")
-    public List<FlightDTO> generateFlights()
+    @GetMapping("/generate/round/tr")
+    public List<Pair<FlightDTO, FlightDTO>> generateRoundTripFlightsTR()
     {
-        return m_flightGeneratorService.provideFlights(Localization.TR);
+        return m_flightGeneratorService.provideRoundTripFlights(Localization.TR);
     }
 
-    @GetMapping("/generate/random")
-    public List<FlightDTO> generateFlightsRandom()
+    @GetMapping("/generate/one-way/tr")
+    public List<FlightDTO> generateOneWayFlightsTR()
     {
-        return m_flightGeneratorService.provideFlights(Localization.RANDOM);
+        return m_flightGeneratorService.provideOneWayFlights(Localization.TR);
     }
+
+
+    @GetMapping("/generate/round/random")
+    public List<Pair<FlightDTO, FlightDTO>> generateRoundTripFlightsRandom()
+    {
+        return m_flightGeneratorService.provideRoundTripFlights(Localization.RANDOM);
+    }
+
+    @GetMapping("/generate/one-way/random")
+    public List<FlightDTO> generateOneWayFlightsRandom()
+    {
+        return m_flightGeneratorService.provideOneWayFlights(Localization.RANDOM);
+    }
+
 }

@@ -1,0 +1,24 @@
+package nuricanozturk.dev.data.common.dto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class FlightsResponseDTO
+{
+    private List<FlightResponseDTO> flights;
+
+    public FlightsResponseDTO()
+    {
+        this.flights = new ArrayList<>();
+    }
+
+    public FlightsResponseDTO(List<FlightResponseDTO> flights)
+    {
+        this.flights = flights;
+    }
+
+    public List<FlightResponseDTO> getFlights()
+    {
+        return flights;
+    }
+}

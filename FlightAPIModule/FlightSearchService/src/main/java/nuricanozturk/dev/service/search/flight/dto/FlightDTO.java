@@ -6,9 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
 
 public class FlightDTO
 {
+    @JsonProperty("flight_number")
+    private UUID id;
     @JsonProperty("departure_airport")
     private String departureAirport;
     @JsonProperty("arrival_airport")
@@ -29,9 +33,23 @@ public class FlightDTO
     @JsonProperty("return_date")
     private LocalDate returnDate;
     private double price;
+    @JsonProperty("return_flight")
+    private FlightDTO returnFlight;
+
 
     public FlightDTO()
     {
+    }
+
+
+    public FlightDTO getReturnFlight()
+    {
+        return returnFlight;
+    }
+
+    public void setReturnFlight(FlightDTO returnFlight)
+    {
+        this.returnFlight = returnFlight;
     }
 
     public String getDepartureAirport()
@@ -104,6 +122,16 @@ public class FlightDTO
         this.returnTime = returnTime;
     }
 
+    public UUID getId()
+    {
+        return id;
+    }
+
+    public void setId(UUID id)
+    {
+        this.id = id;
+    }
+
     @Override
     public String toString()
     {
@@ -115,6 +143,8 @@ public class FlightDTO
         str.append("Return Date: ").append(returnDate != null ? returnDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "N/A").append("\n");
         str.append("Return Time: ").append(returnTime != null ? returnTime.format(DateTimeFormatter.ofPattern("kk:mm:ss")) : "N/A").append("\n");
         str.append("Price: ").append(price).append("\n");
+        if (returnFlight != null)
+            str.append("Return Flight: ").append("\n").append(returnFlight);
         return str.toString();
     }
 }

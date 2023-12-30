@@ -41,12 +41,16 @@ public class SchedulerService implements ISchedulerService
      */
     @Schedules({
             @Scheduled(cron = "00 00 03 * * *", zone = "Europe/Istanbul"),
-            @Scheduled(cron = "00 00 15 * * *", zone = "Europe/Istanbul")
+            @Scheduled(cron = "00 00 15 * * *", zone = "Europe/Istanbul"),
+          //  @Scheduled(cron = "*/5 * * * * *", zone = "Europe/Istanbul")
     })
     @Override
     public void scheduleFlightSearch()
     {
-        doForDataService(() -> m_adminService.saveAllFlights(m_flightProviderService.generateFlights()),
+        doForDataService(() -> m_adminService.saveAllFlights(m_flightProviderService.generateOneWayFlights()),
+                "SchedulerService::scheduleFlightSearch");
+
+        doForDataService(() -> m_adminService.saveAllFlightsPair(m_flightProviderService.generateRoundTripFlights()),
                 "SchedulerService::scheduleFlightSearch");
     }
 }

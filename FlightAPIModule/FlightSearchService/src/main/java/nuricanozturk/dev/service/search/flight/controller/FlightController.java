@@ -2,6 +2,7 @@ package nuricanozturk.dev.service.search.flight.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import nuricanozturk.dev.service.search.flight.dto.ErrorMessage;
+import nuricanozturk.dev.service.search.flight.dto.request.SearchFullQualifiedComparePriceDTO;
 import nuricanozturk.dev.service.search.flight.dto.request.SearchFullQualifiedDTO;
 import nuricanozturk.dev.service.search.flight.service.impl.FlightService;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @SecurityRequirement(name = "Authorization")
 public class FlightController
 {
+
     private final FlightService m_flightService;
 
     public FlightController(FlightService flightService)
@@ -24,13 +26,13 @@ public class FlightController
     }
 
     @GetMapping("/full")
-    public ResponseEntity<Object> findFlightsWithFullQualifiers(@RequestBody SearchFullQualifiedDTO searchFullQualifiedDTO)
+    public ResponseEntity<Object> findFlightsWithFullQualified(@RequestBody SearchFullQualifiedDTO searchFullQualifiedDTO)
     {
         return subscribe(() -> ok(m_flightService.findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween(searchFullQualifiedDTO)),
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
-    @GetMapping("/location")
+    @GetMapping("/airport")
     public ResponseEntity<Object> findFlightsByLocations(@RequestParam("from") String fromCity,
                                                          @RequestParam("to") String toCity,
                                                          @RequestParam(value = "page", required = false, defaultValue = "1") int page)
@@ -39,10 +41,14 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
-    @GetMapping("")
-    public ResponseEntity<Object> find()
+    @GetMapping("deneme")
+    public ResponseEntity<Object> findByDepartureAirportCityAndArrivalAirportCityAndDepartureDateBetweenAndReturnDateBetweenAndPriceBetween
+            (@RequestBody SearchFullQualifiedComparePriceDTO dto)
     {
-        return subscribe(() -> ok(m_flightService.findFlightsByArrivalAirportAndDepartureAirport("Istanbul", "Ankara", 1)),
+        return subscribe(() -> ok(m_flightService.findByAirportAndDepartureDateAndPriceBetween(dto)),
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
+
     }
+
+
 }

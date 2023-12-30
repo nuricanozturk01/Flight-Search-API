@@ -29,9 +29,21 @@ public class FlightDTO
     @JsonProperty("return_date")
     private LocalDate returnDate;
     private double price;
+    @JsonProperty("return_flight")
+    private FlightDTO returnFlight;
 
     public FlightDTO()
     {
+    }
+
+    public FlightDTO getReturnFlight()
+    {
+        return returnFlight;
+    }
+
+    public void setReturnFlight(FlightDTO returnFlight)
+    {
+        this.returnFlight = returnFlight;
     }
 
     public String getDepartureAirport()
@@ -115,6 +127,8 @@ public class FlightDTO
         str.append("Return Date: ").append(returnDate != null ? returnDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "N/A").append("\n");
         str.append("Return Time: ").append(returnTime != null ? returnTime.format(DateTimeFormatter.ofPattern("kk:mm:ss")) : "N/A").append("\n");
         str.append("Price: ").append(price).append("\n");
+        if (returnFlight != null)
+            str.append("Return Flight: ").append("\n").append(returnFlight);
         return str.toString();
     }
 }

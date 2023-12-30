@@ -2,6 +2,7 @@ package nuricanozturk.dev.service.search.flight.mapper;
 
 import nuricanozturk.dev.data.flight.entity.Airport;
 import nuricanozturk.dev.data.flight.entity.Flight;
+import nuricanozturk.dev.service.search.flight.dto.FlightDTO;
 import nuricanozturk.dev.service.search.flight.dto.FlightInfoDTO;
 import nuricanozturk.dev.service.search.flight.dto.FlightsInfoDTO;
 import nuricanozturk.dev.service.search.flight.dto.request.UpdateFlightDTO;
@@ -19,9 +20,10 @@ import java.util.UUID;
 public interface IFlightMapper
 {
     @Mappings({
-            @Mapping(target = "flightNumber", source = "flight.id"),
-            @Mapping(target = "from", source = "flight.departureAirport.city"),
-            @Mapping(target = "to", source = "flight.arrivalAirport.city"),
+            @Mapping(target = "departureAirport", source = "flight.departureAirport.city"),
+            @Mapping(target = "arrivalAirport", source = "flight.arrivalAirport.city"),
+            @Mapping(target = "returnFlight.arrivalAirport", source = "flight.returnFlight.arrivalAirport.city"),
+            @Mapping(target = "returnFlight.departureAirport", source = "flight.returnFlight.departureAirport.city"),
     })
     FlightInfoDTO toFlightInfoDTO(Flight flight);
 
@@ -48,4 +50,7 @@ public interface IFlightMapper
     {
         return returnDate.orElse(null);
     }
+
+
+    FlightInfoDTO toFlightInfoDTO(FlightDTO flight);
 }

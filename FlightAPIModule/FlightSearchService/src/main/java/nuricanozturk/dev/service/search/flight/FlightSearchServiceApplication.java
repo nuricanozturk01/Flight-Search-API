@@ -19,6 +19,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static nuricanozturk.dev.data.flight.util.RepositoryBeanName.AIRPORT_REPOSITORY_BEAN_NAME;
 import static nuricanozturk.dev.service.search.flight.util.FlightServiceBeanName.FLIGHT_SERVICE_BEAN_NAME;
 
+/**
+ * FlightSearchServiceApplication
+ * Some classes in callofproject package are inspired from C and System Programmers Association's Java Course.
+ */
 @SpringBootApplication
 @ComponentScan(basePackages = {AIRPORT_REPOSITORY_BEAN_NAME, FLIGHT_SERVICE_BEAN_NAME})
 @EnableJpaRepositories(basePackages = AIRPORT_REPOSITORY_BEAN_NAME)
