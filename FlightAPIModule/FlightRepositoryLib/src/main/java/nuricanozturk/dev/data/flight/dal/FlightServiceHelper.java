@@ -65,28 +65,21 @@ public class FlightServiceHelper
     }
 
 
-    public Page<Flight> findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween(String arrivalAirport,
-                                                                                                           String departureAirport,
-                                                                                                           LocalDate departureDate,
-                                                                                                           LocalDate returnDate,
-                                                                                                           int page)
+    public Page<Flight> findFlightsByFromAndToLocationAndDate(String arrivalAirport, String departureAirport,
+                                                              LocalDate departureDate, LocalDate returnDate, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
 
-        return doForRepository(() -> m_flightRepository.findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween
-                        (arrivalAirport, departureAirport, departureDate, returnDate, pageable),
+        return doForRepository(() -> m_flightRepository.findFlightsByFromAndToLocationAndDate(arrivalAirport, departureAirport, departureDate, returnDate, pageable),
                 "FlightServiceHelper::findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween");
     }
 
-    public Page<Flight> findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateBetween(String arrivalAirport,
-                                                                                              String departureAirport,
-                                                                                              LocalDate departureDate,
-                                                                                              int page)
+    public Page<Flight> findFlightsByFromAndToAndDateBetween(String arrivalAirport, String departureAirport,
+                                                             LocalDate departureDate, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
 
-        return doForRepository(() -> m_flightRepository.findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateBetween
-                        (arrivalAirport, departureAirport, departureDate, pageable),
+        return doForRepository(() -> m_flightRepository.findFlightsByFromAndToAndDateBetween(arrivalAirport, departureAirport, departureDate, pageable),
                 "FlightServiceHelper::findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateBetween");
     }
 
@@ -151,8 +144,8 @@ public class FlightServiceHelper
         doForRepository(() -> m_flightRepository.saveAll(flights), "FlightServiceHelper::saveAllFlights");
     }
 
-    public Page<Flight> findFlightsByDepartureAirportAndArrivalAirportAndDepartureDateBetween(String departureAirport, String arrivalAirport,
-                                                                                              LocalDate startDate, LocalDate endDate, int page)
+    public Page<Flight> findFlightsByFromAndToAndDateBetween(String departureAirport, String arrivalAirport,
+                                                             LocalDate startDate, LocalDate endDate, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
         return doForRepository(() -> m_flightRepository.findFlightsByDepartureAirportAndArrivalAirportAndDepartureDateBetween(departureAirport, arrivalAirport, startDate, endDate, pageable),
@@ -184,7 +177,7 @@ public class FlightServiceHelper
     }
 
 
-    public Page<Flight> findFlightsByDepartureAirportAndDepartureDate(Airport departureAirport, LocalDate localDate, int page)
+    public Page<Flight> findFlightsByDepartureAirportAndDepartureDate(String departureAirport, LocalDate localDate, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
         return doForRepository(() -> m_flightRepository.findFlightsByDepartureAirportAndDepartureDate(departureAirport, localDate, pageable),
@@ -192,7 +185,7 @@ public class FlightServiceHelper
     }
 
 
-    public Page<Flight> findFlightsByArrivalAirportAndDepartureDate(Airport arrivalAirport, LocalDate localDate, int page)
+    public Page<Flight> findFlightsByArrivalAirportAndDepartureDate(String arrivalAirport, LocalDate localDate, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
         return doForRepository(() -> m_flightRepository.findFlightsByArrivalAirportAndDepartureDate(arrivalAirport, localDate, pageable),
@@ -200,10 +193,10 @@ public class FlightServiceHelper
     }
 
 
-    public Page<Flight> findFlightsByDepartureAirportAndArrivalAirportAndDepartureDate(Airport departureAirport, Airport arrivalAirport, LocalDate departureDate, int page)
+    public Page<Flight> findFlightsByFromAndToAndFromDate(String departureAirport, String arrivalAirport, LocalDate departureDate, int page)
     {
         var pageable = PageRequest.of(page - 1, 15);
-        return doForRepository(() -> m_flightRepository.findFlightsByDepartureAirportAndArrivalAirportAndDepartureDate(departureAirport, arrivalAirport, departureDate, pageable),
+        return doForRepository(() -> m_flightRepository.findFlightsByFromAndToAndFromDate(departureAirport, arrivalAirport, departureDate, pageable),
                 "FlightServiceHelper::findFlightsByDepartureAirportAndArrivalAirportAndDepartureDate");
     }
 

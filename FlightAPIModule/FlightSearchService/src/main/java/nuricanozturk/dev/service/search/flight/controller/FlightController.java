@@ -28,7 +28,7 @@ public class FlightController
     @GetMapping("/full")
     public ResponseEntity<Object> findFlightsWithFullQualified(@RequestBody SearchFullQualifiedDTO searchFullQualifiedDTO)
     {
-        return subscribe(() -> ok(m_flightService.findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween(searchFullQualifiedDTO)),
+        return subscribe(() -> ok(m_flightService.findFlightsByFromAndToLocationAndDate(searchFullQualifiedDTO)),
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
