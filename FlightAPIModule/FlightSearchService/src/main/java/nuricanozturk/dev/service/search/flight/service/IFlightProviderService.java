@@ -1,7 +1,7 @@
 package nuricanozturk.dev.service.search.flight.service;
 
+import nuricanozturk.dev.data.common.dto.FlightDTO;
 import nuricanozturk.dev.data.common.util.pair.Pair;
-import nuricanozturk.dev.service.search.flight.dto.FlightDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

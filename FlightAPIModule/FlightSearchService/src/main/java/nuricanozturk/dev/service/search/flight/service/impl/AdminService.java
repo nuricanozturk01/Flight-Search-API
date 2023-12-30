@@ -1,24 +1,27 @@
 package nuricanozturk.dev.service.search.flight.service.impl;
 
 import callofproject.dev.library.exception.service.DataServiceException;
+import nuricanozturk.dev.data.common.dto.FlightDTO;
+import nuricanozturk.dev.data.common.dto.FlightResponseDTO;
+import nuricanozturk.dev.data.common.dto.ResponseDTO;
+import nuricanozturk.dev.data.common.dto.request.CreateAirportDTO;
+import nuricanozturk.dev.data.common.dto.request.CreateFlightDTO;
+import nuricanozturk.dev.data.common.dto.request.UpdateAirportDTO;
+import nuricanozturk.dev.data.common.dto.request.UpdateFlightDTO;
 import nuricanozturk.dev.data.common.util.pair.Pair;
 import nuricanozturk.dev.data.flight.dal.FlightServiceHelper;
 import nuricanozturk.dev.data.flight.entity.Airport;
 import nuricanozturk.dev.data.flight.entity.Flight;
-import nuricanozturk.dev.service.search.flight.dto.FlightDTO;
-import nuricanozturk.dev.service.search.flight.dto.ResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.CreateAirportDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.CreateFlightDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.UpdateAirportDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.UpdateFlightDTO;
 import nuricanozturk.dev.service.search.flight.mapper.IFlightMapper;
 import nuricanozturk.dev.service.search.flight.service.IAdminService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static callofproject.dev.library.exception.util.CopDataUtil.doForDataService;
+import static java.util.Optional.of;
 import static nuricanozturk.dev.service.search.flight.util.StringNormalization.convert;
 
 /**
@@ -55,6 +58,10 @@ public class AdminService implements IAdminService
     {
         var departureAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.departureAirport()));
         var arrivalAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.arrivalAirport()));
+        var returnFlight = createReturnFlight(createFlightDTO.returnFlight());
+
+        if (returnFlight.isPresent())
+            returnFlight = of(m_flightServiceHelper.saveFlight(returnFlight.get()));
 
         var flight = new Flight.Builder()
                 .withArrivalAirport(arrivalAirport)
@@ -64,12 +71,40 @@ public class AdminService implements IAdminService
                 .withReturnDate(createFlightDTO.returnDate().orElse(null))
                 .withReturnTime(createFlightDTO.returnTime().orElse(null))
                 .withPrice(createFlightDTO.price())
-                .withReturnFlight(createFlightDTO.returnFlight().orElse(null))
+                .withReturnFlight(returnFlight.orElse(null))
                 .build();
 
         var savedFlight = doForDataService(() -> m_flightServiceHelper.saveFlight(flight), "AdminService::createFlight");
 
-        return new ResponseDTO(null, null, null, "Success", savedFlight);
+
+        if (returnFlight.isEmpty())
+            return new ResponseDTO(null, null, null, "Success", m_flightMapper.toFlightInfoDTO(savedFlight));
+        else
+        {
+            var returnFlightDTO = m_flightMapper.toFlightInfoDTO(returnFlight.get());
+            var departureFlightInfoDTO = m_flightMapper.toFlightInfoDTO(savedFlight);
+            return new ResponseDTO(null, null, null, "Success", new FlightResponseDTO(departureFlightInfoDTO, of(returnFlightDTO)));
+        }
+    }
+
+    private Optional<Flight> createReturnFlight(Optional<CreateFlightDTO> createFlightDTO)
+    {
+        if (createFlightDTO.isEmpty())
+            return Optional.empty();
+        var departureAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.get().departureAirport()));
+        var arrivalAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.get().arrivalAirport()));
+
+        var flight = new Flight.Builder()
+                .withArrivalAirport(arrivalAirport)
+                .withDepartureAirport(departureAirport)
+                .withDepartureTime(createFlightDTO.get().departureTime())
+                .withDepartureDate(createFlightDTO.get().departureDate())
+                .withReturnDate(createFlightDTO.get().returnDate().orElse(null))
+                .withReturnTime(createFlightDTO.get().returnTime().orElse(null))
+                .withPrice(createFlightDTO.get().price())
+                .build();
+
+        return of(flight);
     }
 
     /**

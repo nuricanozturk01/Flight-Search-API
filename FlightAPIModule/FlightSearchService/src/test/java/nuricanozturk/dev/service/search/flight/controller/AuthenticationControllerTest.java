@@ -1,9 +1,9 @@
 package nuricanozturk.dev.service.search.flight.controller;
 
+import nuricanozturk.dev.data.common.dto.LoginDTO;
+import nuricanozturk.dev.data.common.dto.LoginResponseDTO;
+import nuricanozturk.dev.data.common.dto.RegisterDTO;
 import nuricanozturk.dev.service.search.flight.DataProvider;
-import nuricanozturk.dev.service.search.flight.dto.LoginDTO;
-import nuricanozturk.dev.service.search.flight.dto.LoginResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterDTO;
 import nuricanozturk.dev.service.search.flight.service.impl.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

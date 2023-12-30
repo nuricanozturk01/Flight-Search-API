@@ -1,6 +1,7 @@
 package nuricanozturk.dev.service.search.flight;
 
-import nuricanozturk.dev.service.search.flight.dto.RegisterDTO;
+
+import nuricanozturk.dev.data.common.dto.RegisterDTO;
 
 public final class DataProvider
 {

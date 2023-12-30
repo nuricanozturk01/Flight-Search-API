@@ -2,7 +2,6 @@ package nuricanozturk.dev.data.common.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import nuricanozturk.dev.data.flight.entity.Flight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,7 +26,7 @@ public record CreateFlightDTO(
         Optional<LocalDate> returnDate,
 
         @JsonProperty("return_flight")
-        Optional<Flight> returnFlight,
+        Optional<CreateFlightDTO> returnFlight,
 
         double price)
 {

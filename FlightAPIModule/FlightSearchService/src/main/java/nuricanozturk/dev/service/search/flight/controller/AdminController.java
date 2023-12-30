@@ -1,11 +1,11 @@
 package nuricanozturk.dev.service.search.flight.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import nuricanozturk.dev.service.search.flight.dto.ErrorMessage;
-import nuricanozturk.dev.service.search.flight.dto.request.CreateAirportDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.CreateFlightDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.UpdateAirportDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.UpdateFlightDTO;
+import nuricanozturk.dev.data.common.dto.ErrorMessage;
+import nuricanozturk.dev.data.common.dto.request.CreateAirportDTO;
+import nuricanozturk.dev.data.common.dto.request.CreateFlightDTO;
+import nuricanozturk.dev.data.common.dto.request.UpdateAirportDTO;
+import nuricanozturk.dev.data.common.dto.request.UpdateFlightDTO;
 import nuricanozturk.dev.service.search.flight.service.IAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

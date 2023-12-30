@@ -1,11 +1,11 @@
 package nuricanozturk.dev.service.search.flight.mapper;
 
+import nuricanozturk.dev.data.common.dto.FlightDTO;
+import nuricanozturk.dev.data.common.dto.FlightInfoDTO;
+import nuricanozturk.dev.data.common.dto.FlightsInfoDTO;
+import nuricanozturk.dev.data.common.dto.request.UpdateFlightDTO;
 import nuricanozturk.dev.data.flight.entity.Airport;
 import nuricanozturk.dev.data.flight.entity.Flight;
-import nuricanozturk.dev.service.search.flight.dto.FlightDTO;
-import nuricanozturk.dev.service.search.flight.dto.FlightInfoDTO;
-import nuricanozturk.dev.service.search.flight.dto.FlightsInfoDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.UpdateFlightDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

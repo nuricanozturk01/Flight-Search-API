@@ -1,10 +1,10 @@
 package nuricanozturk.dev.service.search.flight.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import nuricanozturk.dev.service.search.flight.dto.LoginDTO;
-import nuricanozturk.dev.service.search.flight.dto.LoginResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterResponseDTO;
+import nuricanozturk.dev.data.common.dto.LoginDTO;
+import nuricanozturk.dev.data.common.dto.LoginResponseDTO;
+import nuricanozturk.dev.data.common.dto.RegisterDTO;
+import nuricanozturk.dev.data.common.dto.RegisterResponseDTO;
 import nuricanozturk.dev.service.search.flight.service.IAuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

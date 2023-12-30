@@ -2,14 +2,14 @@ package nuricanozturk.dev.service.search.flight.service.impl;
 
 import callofproject.dev.library.exception.service.DataServiceException;
 import callofproject.dev.service.jwt.JwtUtil;
+import nuricanozturk.dev.data.common.dto.LoginDTO;
+import nuricanozturk.dev.data.common.dto.LoginResponseDTO;
+import nuricanozturk.dev.data.common.dto.RegisterDTO;
+import nuricanozturk.dev.data.common.dto.RegisterResponseDTO;
 import nuricanozturk.dev.data.flight.entity.Customer;
 import nuricanozturk.dev.data.flight.entity.Role;
 import nuricanozturk.dev.data.flight.repository.ICustomerRepository;
 import nuricanozturk.dev.service.search.flight.config.FlightAuthenticationProvider;
-import nuricanozturk.dev.service.search.flight.dto.LoginDTO;
-import nuricanozturk.dev.service.search.flight.dto.LoginResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterResponseDTO;
 import nuricanozturk.dev.service.search.flight.mapper.IUserRegisterMapper;
 import nuricanozturk.dev.service.search.flight.service.IAuthenticationService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

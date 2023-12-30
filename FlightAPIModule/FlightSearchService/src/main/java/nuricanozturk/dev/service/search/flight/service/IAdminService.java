@@ -1,13 +1,13 @@
 package nuricanozturk.dev.service.search.flight.service;
 
 import callofproject.dev.library.exception.service.DataServiceException;
+import nuricanozturk.dev.data.common.dto.FlightDTO;
+import nuricanozturk.dev.data.common.dto.ResponseDTO;
+import nuricanozturk.dev.data.common.dto.request.CreateAirportDTO;
+import nuricanozturk.dev.data.common.dto.request.CreateFlightDTO;
+import nuricanozturk.dev.data.common.dto.request.UpdateAirportDTO;
+import nuricanozturk.dev.data.common.dto.request.UpdateFlightDTO;
 import nuricanozturk.dev.data.common.util.pair.Pair;
-import nuricanozturk.dev.service.search.flight.dto.FlightDTO;
-import nuricanozturk.dev.service.search.flight.dto.ResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.CreateAirportDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.CreateFlightDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.UpdateAirportDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.UpdateFlightDTO;
 
 import java.util.List;
 import java.util.UUID;

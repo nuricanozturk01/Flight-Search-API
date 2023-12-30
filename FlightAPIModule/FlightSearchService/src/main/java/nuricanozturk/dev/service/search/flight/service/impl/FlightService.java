@@ -1,14 +1,14 @@
 package nuricanozturk.dev.service.search.flight.service.impl;
 
 import callofproject.dev.library.exception.ISupplier;
+import nuricanozturk.dev.data.common.dto.FlightInfoDTO;
+import nuricanozturk.dev.data.common.dto.FlightResponseDTO;
+import nuricanozturk.dev.data.common.dto.FlightsResponseDTO;
+import nuricanozturk.dev.data.common.dto.ResponseDTO;
+import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedComparePriceDTO;
+import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedDTO;
 import nuricanozturk.dev.data.flight.dal.FlightServiceHelper;
 import nuricanozturk.dev.data.flight.entity.Flight;
-import nuricanozturk.dev.service.search.flight.dto.FlightInfoDTO;
-import nuricanozturk.dev.service.search.flight.dto.FlightResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.FlightsResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.ResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.SearchFullQualifiedComparePriceDTO;
-import nuricanozturk.dev.service.search.flight.dto.request.SearchFullQualifiedDTO;
 import nuricanozturk.dev.service.search.flight.mapper.IFlightMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -156,16 +156,6 @@ public class FlightService
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsCityDateRange", page);
     }
 
-    public ResponseDTO toFlightsResponseDTO(ISupplier<Page<Flight>> supplier, String msg, int page)
-    {
-        var flights = doForDataService(supplier, msg);
-
-        var flightsInfo = m_flightMapper.toFlightsInfoDTO(toList(flights.getContent(), m_flightMapper::toFlightInfoDTO));
-
-        var flightsResponseDTO = new FlightsResponseDTO(flightsInfo.flights().stream().map(this::generateFlightResponseDTO).toList());
-
-        return new ResponseDTO(page, flights.getTotalPages(), flightsResponseDTO.getFlights().size(), "Success", flightsResponseDTO);
-    }
 
     public ResponseDTO findByAirportAndDepartureDateAndPriceBetween(SearchFullQualifiedComparePriceDTO dto)
     {
@@ -194,5 +184,17 @@ public class FlightService
                 dto.minPrice(), dto.maxPrice(), dto.page());
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findByAllAirportAndAllDateAndPriceBetween", dto.page());
+    }
+
+
+    private ResponseDTO toFlightsResponseDTO(ISupplier<Page<Flight>> supplier, String msg, int page)
+    {
+        var flights = doForDataService(supplier, msg);
+
+        var flightsInfo = m_flightMapper.toFlightsInfoDTO(toList(flights.getContent(), m_flightMapper::toFlightInfoDTO));
+
+        var flightsResponseDTO = new FlightsResponseDTO(flightsInfo.flights().stream().map(this::generateFlightResponseDTO).toList());
+
+        return new ResponseDTO(page, flights.getTotalPages(), flightsResponseDTO.getFlights().size(), "Success", flightsResponseDTO);
     }
 }

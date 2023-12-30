@@ -1,9 +1,10 @@
 package nuricanozturk.dev.service.search.flight.service;
 
-import nuricanozturk.dev.service.search.flight.dto.LoginDTO;
-import nuricanozturk.dev.service.search.flight.dto.LoginResponseDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterResponseDTO;
+
+import nuricanozturk.dev.data.common.dto.LoginDTO;
+import nuricanozturk.dev.data.common.dto.LoginResponseDTO;
+import nuricanozturk.dev.data.common.dto.RegisterDTO;
+import nuricanozturk.dev.data.common.dto.RegisterResponseDTO;
 
 /**
  * IAuthenticationService interface handles the authentication processes for the flight management system.

@@ -1,11 +1,11 @@
 package nuricanozturk.dev.service.search.flight.service;
 
 import callofproject.dev.library.exception.service.DataServiceException;
+import nuricanozturk.dev.data.common.dto.LoginDTO;
+import nuricanozturk.dev.data.common.dto.RegisterDTO;
 import nuricanozturk.dev.data.flight.entity.Customer;
 import nuricanozturk.dev.service.search.flight.DatabaseCleaner;
 import nuricanozturk.dev.service.search.flight.Injection;
-import nuricanozturk.dev.service.search.flight.dto.LoginDTO;
-import nuricanozturk.dev.service.search.flight.dto.RegisterDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
