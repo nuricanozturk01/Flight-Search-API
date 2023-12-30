@@ -1,4 +1,4 @@
-package nuricanozturk.dev.service.search.flight.service;
+package nuricanozturk.dev.service.search.flight.service.impl;
 
 import nuricanozturk.dev.data.flight.dal.FlightServiceHelper;
 import nuricanozturk.dev.data.flight.entity.Flight;
@@ -59,7 +59,7 @@ public class FlightService
             return findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateBetween(dto.arrivalAirport(), dto.departureAirport(), dto.departureDate(), dto.page());
         System.out.println("here1");
         var flights = m_flightServiceHelper.findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween
-                (dto.arrivalAirport(), dto.departureAirport(), dto.departureDate(), dto.returnDate(), dto.page());
+                (dto.arrivalAirport(), dto.departureAirport(), dto.departureDate(), dto.returnDate().orElse(null), dto.page());
         System.out.println(flights.getContent().size());
         var flightResponseDTO = doForDataService(() -> m_flightMapper.toFlightsInfoDTO(toList(flights.getContent(), m_flightMapper::toFlightInfoDTO)),
                 "FlightService::findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween");

@@ -3,7 +3,7 @@ package nuricanozturk.dev.service.search.flight.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import nuricanozturk.dev.service.search.flight.dto.ErrorMessage;
 import nuricanozturk.dev.service.search.flight.dto.request.SearchFullQualifiedDTO;
-import nuricanozturk.dev.service.search.flight.service.FlightService;
+import nuricanozturk.dev.service.search.flight.service.impl.FlightService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

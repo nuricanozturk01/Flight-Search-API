@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -142,5 +143,10 @@ public class FlightServiceHelper
     public Page<Airport> findAllAirports(int page)
     {
         return doForRepository(() -> m_airportRepository.findAll(PageRequest.of(page - 1, 15)), "FlightServiceHelper::findAllAirports");
+    }
+
+    public void saveAllFlights(List<Flight> flights)
+    {
+        doForRepository(() -> m_flightRepository.saveAll(flights), "FlightServiceHelper::saveAllFlights");
     }
 }

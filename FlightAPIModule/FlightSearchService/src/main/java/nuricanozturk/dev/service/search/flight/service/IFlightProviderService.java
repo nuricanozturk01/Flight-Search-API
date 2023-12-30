@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "flight-provider-service", url = "http://localhost:3435/api/generator/flight")
+@FeignClient(name = "${flight.provider.service.name}", url = "${flight.provider.url}")
 public interface IFlightProviderService
 {
     @GetMapping("/generate/${flight.provider.localization}")

@@ -4,7 +4,7 @@ import nuricanozturk.dev.service.search.flight.DataProvider;
 import nuricanozturk.dev.service.search.flight.dto.LoginDTO;
 import nuricanozturk.dev.service.search.flight.dto.LoginResponseDTO;
 import nuricanozturk.dev.service.search.flight.dto.RegisterDTO;
-import nuricanozturk.dev.service.search.flight.service.AuthenticationService;
+import nuricanozturk.dev.service.search.flight.service.impl.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

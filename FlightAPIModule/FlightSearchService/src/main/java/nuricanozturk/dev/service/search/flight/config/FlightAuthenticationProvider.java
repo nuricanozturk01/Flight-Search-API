@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class FlightAuthenticationProvider implements AuthenticationProvider
 {
     private final PasswordEncoder passwordEncoder;
-
     private final ICustomerRepository m_customerRepository;
 
     public FlightAuthenticationProvider(PasswordEncoder passwordEncoder, ICustomerRepository customerRepository)

@@ -41,6 +41,7 @@ public class AuthenticationServiceTest
                 "OZTURK",
                 "canozturk309@gmail.com",
                 "pass123");
+
         var registerResult = m_injection.getAuthenticationService().register(userRegister);
 
         assertNotNull(registerResult);
@@ -69,8 +70,7 @@ public class AuthenticationServiceTest
     {
         var loginRequest = new LoginDTO("qwerty", "dsadsafs");
 
-        var exception = assertThrows(DataServiceException.class,
-                () -> m_injection.getAuthenticationService().login(loginRequest));
+        var exception = assertThrows(DataServiceException.class, () -> m_injection.getAuthenticationService().login(loginRequest));
         assertEquals("Message: AuthenticationService::login , Cause Message:No user registered with this details!", exception.getMessage());
 
     }
@@ -81,8 +81,7 @@ public class AuthenticationServiceTest
     {
         var loginRequest = new LoginDTO(customer.getUsername(), "password321");
 
-        var exception = assertThrows(DataServiceException.class,
-                () -> m_injection.getAuthenticationService().login(loginRequest));
+        var exception = assertThrows(DataServiceException.class, () -> m_injection.getAuthenticationService().login(loginRequest));
         assertEquals("Message: AuthenticationService::login , Cause Message:Invalid username or password!", exception.getMessage());
     }
 
@@ -91,8 +90,7 @@ public class AuthenticationServiceTest
     {
         var loginRequest = new LoginDTO("emirr", customer.getPassword());
 
-        var exception = assertThrows(DataServiceException.class,
-                () -> m_injection.getAuthenticationService().login(loginRequest));
+        var exception = assertThrows(DataServiceException.class, () -> m_injection.getAuthenticationService().login(loginRequest));
         assertEquals("Message: AuthenticationService::login , Cause Message:No user registered with this details!",
                 exception.getMessage());
     }
@@ -103,8 +101,7 @@ public class AuthenticationServiceTest
     {
         var loginRequest = new LoginDTO("", "");
 
-        var exception = assertThrows(DataServiceException.class,
-                () -> m_injection.getAuthenticationService().login(loginRequest));
+        var exception = assertThrows(DataServiceException.class, () -> m_injection.getAuthenticationService().login(loginRequest));
         assertEquals("Message: AuthenticationService::login , Cause Message:No user registered with this details!", exception.getMessage());
     }
 
@@ -112,9 +109,7 @@ public class AuthenticationServiceTest
     @Test
     public void testLoginOperation_withGivenNullUser_shouldThrowDataServiceException()
     {
-
-        var exception = assertThrows(DataServiceException.class,
-                () -> m_injection.getAuthenticationService().login(null));
+        var exception = assertThrows(DataServiceException.class, () -> m_injection.getAuthenticationService().login(null));
         assertEquals("Message: AuthenticationService::login , Cause Message:Message: AuthenticationRequest is null! ", exception.getMessage());
     }
 
