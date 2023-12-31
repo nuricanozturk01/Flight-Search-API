@@ -16,7 +16,6 @@ public class Injection
 {
     @Autowired
     private AuthenticationService authenticationService;
-
     @Autowired
     private FlightService flightService;
     @Autowired

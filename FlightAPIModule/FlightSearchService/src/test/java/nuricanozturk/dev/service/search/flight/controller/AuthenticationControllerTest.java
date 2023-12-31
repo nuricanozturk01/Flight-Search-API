@@ -65,7 +65,6 @@ public class AuthenticationControllerTest
         // Act
         ResponseEntity<Object> response = m_authenticationController.login(request);
 
-
         // Assert
         var result = (LoginResponseDTO) response.getBody();
         assertEquals(HttpStatus.OK, response.getStatusCode());
