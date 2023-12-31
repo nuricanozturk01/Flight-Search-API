@@ -18,6 +18,7 @@ with various parameters.
 - **Swagger**: Framework for documenting APIs.
 - **Faker API**: Framework for generating fake data. (I use this for the FlightDataProvider service.)
 - **PostgreSQL**: Relational database management system.
+- **H2 DB**: I used for testing database.
 - **Feign Client**: Framework for making HTTP requests. (I use this for the FlightDataProvider service.)
 
 ## Methodologies
