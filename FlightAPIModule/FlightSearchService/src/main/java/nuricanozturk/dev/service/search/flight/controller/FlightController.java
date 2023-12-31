@@ -82,7 +82,7 @@ public class FlightController
     }
 
     @GetMapping("/search/by-origin-destination-date")
-    public ResponseEntity<Object> findFlightsByFromAndToAndDateBetween(@RequestParam String from, @RequestParam String to, @RequestParam LocalDate date,
+    public ResponseEntity<Object> findFlightsByFromAndToAndDateBetween(@RequestParam String from, @RequestParam String to, @RequestParam String date,
                                                                        @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findFlightsByFromAndToAndDateBetween(from, to, date, page)),
@@ -90,7 +90,7 @@ public class FlightController
     }
 
     @GetMapping("/search/by-departure-date-range")
-    public ResponseEntity<Object> findFlightsByDepartureDateBetween(@RequestParam LocalDate start, @RequestParam LocalDate end,
+    public ResponseEntity<Object> findFlightsByDepartureDateBetween(@RequestParam String start, @RequestParam String end,
                                                                     @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findFlightsByDepartureDateBetween(start, end, page)),
@@ -98,8 +98,8 @@ public class FlightController
     }
 
     @GetMapping("/search/departure-airport-date-range")
-    public ResponseEntity<Object> findFlightsByDepartureAirportAndDepartureDateBetween(@RequestParam String from, @RequestParam LocalDate start,
-                                                                                       @RequestParam LocalDate end, @RequestParam(value = "p", defaultValue = "1") int page)
+    public ResponseEntity<Object> findFlightsByDepartureAirportAndDepartureDateBetween(@RequestParam String from, @RequestParam String start,
+                                                                                       @RequestParam String end, @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findFlightsByDepartureAirportAndDepartureDateBetween(from, start, end, page)),
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
@@ -114,7 +114,7 @@ public class FlightController
     }
 
     @GetMapping("/search/departure-airport-specific-date")
-    public ResponseEntity<Object> findFlightsByDepartureAirportAndDepartureDate(@RequestParam String from, @RequestParam LocalDate date,
+    public ResponseEntity<Object> findFlightsByDepartureAirportAndDepartureDate(@RequestParam String from, @RequestParam String date,
                                                                                 @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findFlightsByDepartureAirportAndDepartureDate(from, date, page)),
@@ -122,7 +122,7 @@ public class FlightController
     }
 
     @GetMapping("/search/arrival-airport-specific-date")
-    public ResponseEntity<Object> findFlightsByArrivalAirportAndDepartureDate(@RequestParam("arrival") String arrivalAirport, @RequestParam LocalDate date,
+    public ResponseEntity<Object> findFlightsByArrivalAirportAndDepartureDate(@RequestParam("arrival") String arrivalAirport, @RequestParam String date,
                                                                               @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findFlightsByArrivalAirportAndDepartureDate(arrivalAirport, date, page)),
@@ -130,7 +130,7 @@ public class FlightController
     }
 
     @GetMapping("/search/from-to-specific-date")
-    public ResponseEntity<Object> findFlightsByFromAndToAndFromDate(@RequestParam String from, @RequestParam String to, @RequestParam LocalDate date,
+    public ResponseEntity<Object> findFlightsByFromAndToAndFromDate(@RequestParam String from, @RequestParam String to, @RequestParam String date,
                                                                     @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findFlightsByFromAndToAndFromDate(from, to, date, page)),
@@ -138,15 +138,15 @@ public class FlightController
     }
 
     @GetMapping("/search/cheapest-from-to-date-range")
-    public ResponseEntity<Object> findCheapestFlightsWithinRange(@RequestParam String from, @RequestParam String to, @RequestParam LocalDate start,
-                                                                 @RequestParam LocalDate end, @RequestParam(value = "p", defaultValue = "1") int page)
+    public ResponseEntity<Object> findCheapestFlightsWithinRange(@RequestParam String from, @RequestParam String to, @RequestParam String start,
+                                                                 @RequestParam String end, @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findCheapestFlightsWithinRange(from, to, start, end, page)),
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
     @GetMapping("/search/city-date-range")
-    public ResponseEntity<Object> findFlightsCityDateRange(@RequestParam String city, @RequestParam LocalDate start, @RequestParam LocalDate end,
+    public ResponseEntity<Object> findFlightsCityDateRange(@RequestParam String city, @RequestParam String start, @RequestParam String end,
                                                            @RequestParam(value = "p", defaultValue = "1") int page)
     {
         return subscribe(() -> ok(m_flightService.findFlightsCityDateRange(city, start, end, page)),
