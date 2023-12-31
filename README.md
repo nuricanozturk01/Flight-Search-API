@@ -34,6 +34,7 @@ with various parameters.
 - **Unit Testing**: I used **JUnit** and **Mock** for unit testing.
 
 ## Unit Test Results
+![unit_test_results](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/f934d8df-7a6b-4f6f-b552-08b75f88ec3b)
 
 ## Database Design
 
