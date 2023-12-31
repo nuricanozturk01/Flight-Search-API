@@ -66,11 +66,11 @@ public interface IAdminService
     /**
      * Deletes an airport identified by the given airport ID.
      *
-     * @param airportId Unique identifier of the airport to be deleted.
+     * @param city Unique identifier of the airport to be deleted.
      * @return ResponseDTO indicating the success of the operation including a message about the removed airport.
      * @throws DataServiceException if the specified airport is not found or if there's an issue during the deletion process.
      */
-    ResponseDTO deleteAirportById(UUID airportId);
+    ResponseDTO deleteAirportByCityName(String city);
 
     /**
      * Retrieves a paginated list of all flights.

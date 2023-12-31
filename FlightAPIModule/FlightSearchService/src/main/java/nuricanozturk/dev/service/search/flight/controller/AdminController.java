@@ -106,13 +106,13 @@ public class AdminController
     /**
      * Deletes an airport identified by the given ID.
      *
-     * @param airportId The unique identifier of the airport to be deleted.
+     * @param city The unique identifier of the airport to be deleted.
      * @return A ResponseEntity containing the result of the deletion operation.
      */
     @DeleteMapping("delete/airport")
-    public ResponseEntity<Object> deleteAirport(@RequestParam("id") UUID airportId)
+    public ResponseEntity<Object> deleteAirport(@RequestParam("city") String city)
     {
-        return subscribe(() -> ok(m_adminService.deleteAirportById(airportId)),
+        return subscribe(() -> ok(m_adminService.deleteAirportByCityName(city)),
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 

@@ -56,6 +56,7 @@ public class AdminService implements IAdminService
     @Override
     public ResponseDTO createFlight(CreateFlightDTO createFlightDTO)
     {
+        checkCreateFlightDTO(createFlightDTO);
         var departureAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.departureAirport()));
         var arrivalAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.arrivalAirport()));
         var returnFlight = createReturnFlight(createFlightDTO.returnFlight());
@@ -85,6 +86,20 @@ public class AdminService implements IAdminService
             var departureFlightInfoDTO = m_flightMapper.toFlightInfoDTO(savedFlight);
             return new ResponseDTO(null, null, null, "Success", new FlightResponseDTO(departureFlightInfoDTO, of(returnFlightDTO)));
         }
+    }
+
+    private void checkCreateFlightDTO(CreateFlightDTO createFlightDTO)
+    {
+        if (createFlightDTO.departureAirport() == null)
+            throw new DataServiceException("Departure Airport is required!");
+        if (createFlightDTO.arrivalAirport() == null)
+            throw new DataServiceException("Arrival Airport is required!");
+        if (createFlightDTO.departureDate() == null)
+            throw new DataServiceException("Departure Date is required!");
+        if (createFlightDTO.departureTime() == null)
+            throw new DataServiceException("Departure Time is required!");
+        if (createFlightDTO.price() <= 0)
+            throw new DataServiceException("Price is must be greater thane 0!");
     }
 
     private Optional<Flight> createReturnFlight(Optional<CreateFlightDTO> createFlightDTO)
@@ -153,6 +168,8 @@ public class AdminService implements IAdminService
     @Override
     public ResponseDTO createAirport(CreateAirportDTO createAirportDTO)
     {
+        if (createAirportDTO.city() == null)
+            throw new DataServiceException("City is required!");
         var savedAirport = doForDataService(() -> m_flightServiceHelper.saveAirport(convert(createAirportDTO.city())), "AdminService::createAirport");
 
         return new ResponseDTO(null, null, null, "Success", savedAirport);
@@ -168,6 +185,7 @@ public class AdminService implements IAdminService
     @Override
     public ResponseDTO updateFlight(UpdateFlightDTO updateFlightDTO)
     {
+        checkUpdateFlightDTO(updateFlightDTO);
         var currentFlight = findFlightByIdIfExists(updateFlightDTO.id());
 
         var departureAirport = m_flightServiceHelper.saveAirport(convert(updateFlightDTO.departureAirport()));
@@ -180,6 +198,20 @@ public class AdminService implements IAdminService
         return new ResponseDTO(null, null, null, "Success", updatedFlight);
     }
 
+    private void checkUpdateFlightDTO(UpdateFlightDTO updateFlightDTO)
+    {
+        if (updateFlightDTO.departureAirport() == null)
+            throw new DataServiceException("Departure Airport is required!");
+        if (updateFlightDTO.arrivalAirport() == null)
+            throw new DataServiceException("Arrival Airport is required!");
+        if (updateFlightDTO.departureDate() == null)
+            throw new DataServiceException("Departure Date is required!");
+        if (updateFlightDTO.departureTime() == null)
+            throw new DataServiceException("Departure Time is required!");
+        if (updateFlightDTO.price() <= 0)
+            throw new DataServiceException("Price is must be greater thane 0!");
+    }
+
     /**
      * Updates an existing airport with the provided details.
      *
@@ -190,6 +222,9 @@ public class AdminService implements IAdminService
     @Override
     public ResponseDTO updateAirport(UpdateAirportDTO updateAirportDTO)
     {
+        if (updateAirportDTO.city() == null)
+            throw new DataServiceException("City is required!");
+
         var currentAirport = findAirportByIdIfExists(updateAirportDTO.id());
 
         currentAirport.setCity(convert(updateAirportDTO.city()));
@@ -219,18 +254,21 @@ public class AdminService implements IAdminService
     /**
      * Deletes an airport identified by the given airport ID.
      *
-     * @param airportId Unique identifier of the airport to be deleted.
+     * @param city Unique identifier of the airport to be deleted.
      * @return ResponseDTO indicating the success of the operation including a message about the removed airport.
      * @throws DataServiceException if the specified airport is not found or if there's an issue during the deletion process.
      */
     @Override
-    public ResponseDTO deleteAirportById(UUID airportId)
+    public ResponseDTO deleteAirportByCityName(String city)
     {
-        findAirportByIdIfExists(airportId);// if not found, throws DataServiceException
+        var airport = m_flightServiceHelper.findAirportByCity(city);
 
-        m_flightServiceHelper.deleteAirportById(airportId);
+        if (airport.isEmpty())
+            throw new DataServiceException("Airport Not Found!");
 
-        return new ResponseDTO(null, null, null, "Success", airportId.toString() + " removed successfully!");
+        m_flightServiceHelper.deleteAirport(airport.get());
+
+        return new ResponseDTO(null, null, null, "Success", airport.get().getId().toString() + " removed successfully!");
     }
 
     /**

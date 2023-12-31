@@ -124,6 +124,11 @@ public class FlightServiceHelper
         doForRepository(() -> m_airportRepository.deleteById(airportId), "FlightServiceHelper::deleteAirportById");
     }
 
+    public void deleteAirport(Airport airport)
+    {
+        doForRepository(() -> m_airportRepository.delete(airport), "FlightServiceHelper::deleteAirport");
+    }
+
     public Optional<Airport> findAirportById(UUID airportId)
     {
         return doForRepository(() -> m_airportRepository.findById(airportId), "FlightServiceHelper::findAirportById");
