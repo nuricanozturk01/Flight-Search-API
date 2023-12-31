@@ -265,7 +265,8 @@ public interface IFlightRepository extends JpaRepository<Flight, UUID>
     @Query("""
             from Flight where
             departureAirport.city = :p_departureAirport and arrivalAirport.city = :p_arrivalAirport
-            and ((departureDate between :p_startDate and :p_endDate) or (returnDate between :p_startDate and :p_endDate))
+            and ((departureDate between :p_startDate and :p_endDate)
+            or(returnDate between :p_startDate and :p_endDate))
             and price between :p_minPrice and :p_maxPrice
             """)
     Page<Flight> findByAllAirportAndAllDateAndPriceBetween(@Param("p_departureAirport") String departureAirport, @Param("p_arrivalAirport") String arrivalAirport,

@@ -2,11 +2,17 @@ package nuricanozturk.dev.service.search.flight;
 
 
 import nuricanozturk.dev.data.common.dto.RegisterDTO;
+import nuricanozturk.dev.data.common.dto.request.*;
 import nuricanozturk.dev.data.flight.entity.Airport;
 import nuricanozturk.dev.data.flight.entity.Flight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
+
+import static java.time.LocalDate.now;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public final class DataProvider
 {
@@ -66,5 +72,38 @@ public final class DataProvider
                 .withArrivalAirport(from)
                 .withPrice(100)
                 .build();
+    }
+
+    public static CreateFlightDTO provideCreateFlightDTO()
+    {
+        return new CreateFlightDTO("IZMIR", "ANKARA", now(),
+                LocalTime.now(), empty(), empty(), empty(), 100);
+    }
+
+    public static CreateAirportDTO provideCreateAirportDTO()
+    {
+        return new CreateAirportDTO("EDIRNE");
+    }
+
+    public static UpdateFlightDTO provideUpdateFlightDTO()
+    {
+        return new UpdateFlightDTO(UUID.randomUUID(), "ANTALYA", "ANKARA", now(),
+                LocalTime.now(), empty(), empty(), 900);
+    }
+
+    public static UpdateAirportDTO provideUpdateAirportDTO()
+    {
+        return new UpdateAirportDTO(UUID.randomUUID(), "ANTALYA");
+    }
+
+    public static SearchFullQualifiedDTO provideSearchFullQualifiedDTO()
+    {
+        return new SearchFullQualifiedDTO("ANK", "IST", now(), of(now().plusDays(20)), 1);
+    }
+
+    public static SearchFullQualifiedComparePriceDTO provideSearchFullQualifiedComparePriceDTO()
+    {
+        return new SearchFullQualifiedComparePriceDTO("ANK", "IST",
+                now(), of(now().plusDays(20)), 1, 100, 1000);
     }
 }

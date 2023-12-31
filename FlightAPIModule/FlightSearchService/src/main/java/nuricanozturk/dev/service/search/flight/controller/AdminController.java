@@ -58,7 +58,7 @@ public class AdminController
      * @return A ResponseEntity containing the result of the operation.
      */
     @PostMapping("create/airport")
-    public ResponseEntity<Object> upsertAirport(@RequestBody CreateAirportDTO createAirportDTO)
+    public ResponseEntity<Object> createAirport(@RequestBody CreateAirportDTO createAirportDTO)
     {
         return subscribe(() -> ok(m_adminService.createAirport(createAirportDTO)),
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
