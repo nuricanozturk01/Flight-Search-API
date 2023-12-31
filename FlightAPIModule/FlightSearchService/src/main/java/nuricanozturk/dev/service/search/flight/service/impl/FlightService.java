@@ -1,6 +1,7 @@
 package nuricanozturk.dev.service.search.flight.service.impl;
 
 import callofproject.dev.library.exception.ISupplier;
+import callofproject.dev.library.exception.service.DataServiceException;
 import nuricanozturk.dev.data.common.dto.FlightInfoDTO;
 import nuricanozturk.dev.data.common.dto.FlightResponseDTO;
 import nuricanozturk.dev.data.common.dto.FlightsResponseDTO;
@@ -68,13 +69,20 @@ public class FlightService
 
     public ResponseDTO findFlightsByFromAndToLocationAndDate(SearchFullQualifiedDTO dto)
     {
-        if (dto.returnDate().isEmpty())
-            return findFlightsByFromAndToLocationAndDate(dto);
-
-        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByFromAndToLocationAndDate(convert(dto.arrivalAirport()),
-                convert(dto.departureAirport()), dto.departureDate(), dto.returnDate().orElse(null), dto.page());
+        checkSearchFullQualifiedDTO(dto);
+        ISupplier<Page<Flight>> flightSupplier = () -> m_flightServiceHelper.findFlightsByFromAndToLocationAndDate(convert(dto.arrivalAirport()), convert(dto.departureAirport()), dto.departureDate(), dto.returnDate().get(), dto.page());
 
         return toFlightsResponseDTO(flightSupplier, "FlightService::findFlightsByFromAndToLocationAndDate", dto.page());
+    }
+
+    private void checkSearchFullQualifiedDTO(SearchFullQualifiedDTO dto)
+    {
+        if (dto.returnDate().isEmpty())
+            throw new DataServiceException("Return date cannot be empty");
+        if (dto.departureDate().isAfter(dto.returnDate().get()))
+                throw new DataServiceException("Departure date cannot be after return date");
+        if (dto.departureDate().isAfter(dto.returnDate().get()))
+            throw new DataServiceException("Departure date cannot be after return date");
     }
 
     public ResponseDTO findFlightsByFromAndToAndDateBetween(String from, String to, String date, int page)
@@ -202,5 +210,10 @@ public class FlightService
     private LocalDate parseDate(String date)
     {
         return doForDataService(() -> LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy")), "FlightService::parseDate");
+    }
+
+    private String toDateString(LocalDate date)
+    {
+        return doForDataService(() -> date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), "FlightService::toDateString");
     }
 }

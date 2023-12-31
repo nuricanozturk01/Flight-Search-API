@@ -18,6 +18,5 @@ public class DatabaseCleaner
         entityManager.createNativeQuery("DELETE FROM AIRPORT").executeUpdate();
         entityManager.createNativeQuery("DELETE FROM AUTHORITIES").executeUpdate();
         entityManager.createNativeQuery("DELETE FROM CUSTOMER").executeUpdate();
-
     }
 }

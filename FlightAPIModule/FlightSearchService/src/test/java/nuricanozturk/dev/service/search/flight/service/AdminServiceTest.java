@@ -69,6 +69,7 @@ public class AdminServiceTest
         ankaraAirport = m_injection.getAirportRepository().save(provideAnkaraAirport());
         //save flights
         oneWayFlight = m_injection.getFlightRepository().save(provideOneWayFlight(istanbulAirport, ankaraAirport));
+
         var roundTrapFlightObj = provideRoundTrapFlight(istanbulAirport, ankaraAirport);
         m_injection.getFlightRepository().save(roundTrapFlightObj.getReturnFlight());
         roundTrapFlight = m_injection.getFlightRepository().save(roundTrapFlightObj);

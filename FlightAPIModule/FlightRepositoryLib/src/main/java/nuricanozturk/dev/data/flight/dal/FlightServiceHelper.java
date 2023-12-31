@@ -71,7 +71,7 @@ public class FlightServiceHelper
         var pageable = PageRequest.of(page - 1, 15);
 
         return doForRepository(() -> m_flightRepository.findFlightsByFromAndToLocationAndDate(arrivalAirport, departureAirport, departureDate, returnDate, pageable),
-                "FlightServiceHelper::findFlightsByArrivalAirportAndDepartureAirportAndDepartureDateAndReturnDateBetween");
+                "FlightServiceHelper::findFlightsByFromAndToLocationAndDate");
     }
 
     public Page<Flight> findFlightsByFromAndToAndDateBetween(String arrivalAirport, String departureAirport,
