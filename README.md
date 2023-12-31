@@ -81,19 +81,18 @@ with various parameters.
 
 - **FlightSearchService**:
     - You can search flights with various parameters.
-    - You can search flights between two airports.
-  
+
 - **FlightDataProvider**:
     - Provides flight information to the FlightSearchAPI at a specific time every day.
 
-# AuthenticationController API Endpoints
+## AuthenticationController API Endpoints
 
 | HTTP Method | Endpoint             | Description                                                                                                                                                                                                                                                                              |
 |-------------|----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | POST        | `/api/auth/login`    | Handles user login process. Accepts `LoginDTO` containing user's login credentials and returns a `LoginResponseDTO` with login response data. In case of success, it returns a successful login response; in case of failure, it returns an error message.                               |
 | POST        | `/api/auth/register` | Handles user registration process. Accepts `RegisterDTO` containing user's registration details and returns a `RegisterResponseDTO` with registration response data. In case of success, it returns a successful registration response; in case of failure, it returns an error message. |
 
-# AdminController API Endpoints
+## AdminController API Endpoints
 
 | HTTP Method | Endpoint                      | Description                                                                                         |
 |-------------|-------------------------------|-----------------------------------------------------------------------------------------------------|
@@ -106,7 +105,7 @@ with various parameters.
 | GET         | `/api/admin/find/flight/all`  | Used to retrieve a paginated list of all flights. Requires `page` parameter for pagination.         |
 | GET         | `/api/admin/find/airport/all` | Used to retrieve a paginated list of all airports. Requires `page` parameter for pagination.        |
 
-# FlightController API Endpoints
+## FlightController API Endpoints
 
 | HTTP Method | Endpoint                                             | Description                                                                                                                       |
 |-------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
