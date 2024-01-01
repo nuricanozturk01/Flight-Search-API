@@ -10,6 +10,12 @@ information is generated using the "Faker" API. Thanks to this FlightDataProvide
 with various parameters.
 ## Documentation Link (Java-doc):
 - https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
+## Deployment:
+
+- I deployed this project to Azure.
+  You can access the API from the following link: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
+- The data is uploaded every hour. Over time, the database will become full
+
 ## Technologies
 
 - **Spring Boot**: Framework for creating web applications.
@@ -139,9 +145,3 @@ with various parameters.
 | GET         | `/api/flight/search/from-to-specific-date`           | Finds flights between two cities on a specific date. Requires 'from', 'to', 'date', and an optional 'page'.                       |
 | GET         | `/api/flight/search/cheapest-from-to-date-range`     | Finds the cheapest flights within a date range between two cities. Requires 'from', 'to', 'start', 'end', and an optional 'page'. |
 | GET         | `/api/flight/search/city-date-range`                 | Finds flights related to a specific city within a date range. Requires 'city', 'start', 'end', and an optional 'page'.            |
-
-## Deployment:
-
-- I deployed this project to Azure.
-  You can access the API from the following link: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
-- The data is uploaded every hour. Over time, the database will become full
