@@ -8,7 +8,8 @@ this
 project. This service provides flight information to the **FlightSearchAPI** at a specific time every day. The flight
 information is generated using the "Faker" API. Thanks to this FlightDataProvider service, users can perform searches
 with various parameters.
-
+## Documentation Link (Java-doc):
+- https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
 ## Technologies
 
 - **Spring Boot**: Framework for creating web applications.
