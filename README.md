@@ -33,11 +33,17 @@ with various parameters.
 - **Design Patterns**: I used the Builder, Factory, and Singleton design patterns.
 - **API Documentation**: I used Swagger for API documentation.
 - **Unit Testing**: I used **JUnit** and **Mock** for unit testing.
+
 ## Architecture Diagram:
+
 ![architecture](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/67f29cbe-e731-4ee8-8ce8-f97bf136eb10)
 
 ## Unit Test Results
+
 ![unit_test_results](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/f934d8df-7a6b-4f6f-b552-08b75f88ec3b)
+
+## Data Output
+
 
 ## Database Design
 
@@ -129,3 +135,9 @@ with various parameters.
 | GET         | `/api/flight/search/from-to-specific-date`           | Finds flights between two cities on a specific date. Requires 'from', 'to', 'date', and an optional 'page'.                       |
 | GET         | `/api/flight/search/cheapest-from-to-date-range`     | Finds the cheapest flights within a date range between two cities. Requires 'from', 'to', 'start', 'end', and an optional 'page'. |
 | GET         | `/api/flight/search/city-date-range`                 | Finds flights related to a specific city within a date range. Requires 'city', 'start', 'end', and an optional 'page'.            |
+
+## Deployment:
+
+- I deployed this project to Azure.
+  You can access the API from the following link: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
+- The data is uploaded every hour. Over time, the database will become full

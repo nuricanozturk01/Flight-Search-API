@@ -37,6 +37,11 @@ public class FlightGeneratorService
     @Value("${flight.provider.maxPrice}")
     private double m_maxPrice;
 
+    @Value("${flight.provider.date-range:20}")
+    private int m_dateRange;
+    @Value("${flight.provider.return-date-range:20}")
+    private int m_returnDateRange;
+
     public FlightGeneratorService(Faker faker, Random random)
     {
         m_faker = faker;
@@ -130,12 +135,12 @@ public class FlightGeneratorService
 
     private LocalDate generateDepartureDateTime()
     {
-        return m_faker.date().future(10, TimeUnit.DAYS).toLocalDateTime().toLocalDate();
+        return m_faker.date().future(m_dateRange, TimeUnit.DAYS).toLocalDateTime().toLocalDate();
     }
 
     private LocalDate generateReturnDateTime(LocalDate departureDateTime)
     {
-        return departureDateTime.plusDays(m_faker.number().numberBetween(1, 20));
+        return departureDateTime.plusDays(m_faker.number().numberBetween(1, m_returnDateRange));
     }
 
     private Optional<String> generateCity(String city, Function<Random, String> randomCity)

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -52,7 +53,7 @@ public class SecurityConfig
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception
     {
-
+        security.headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         return security
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(this::authorizationRequests)
@@ -90,6 +91,7 @@ public class SecurityConfig
         requests
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/dev/h2/**").permitAll()
                 .requestMatchers(antMatcher("/api-docs/**")).permitAll()
                 .requestMatchers("/api/flight/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN");

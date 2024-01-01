@@ -42,7 +42,7 @@ public class SchedulerService implements ISchedulerService
     @Schedules({
             @Scheduled(cron = "00 00 03 * * *", zone = "Europe/Istanbul"),
             //@Scheduled(cron = "00 00 15 * * *", zone = "Europe/Istanbul"),
-            //@Scheduled(cron = "*/5 * * * * *", zone = "Europe/Istanbul")
+            //@Scheduled(cron = "00 00 * * * *", zone = "Europe/Istanbul")
     })
     @Override
     public void scheduleFlightSearch()
