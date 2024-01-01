@@ -33,6 +33,8 @@ with various parameters.
 - **Design Patterns**: I used the Builder, Factory, and Singleton design patterns.
 - **API Documentation**: I used Swagger for API documentation.
 - **Unit Testing**: I used **JUnit** and **Mock** for unit testing.
+## Architecture Diagram:
+![architecture](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/67f29cbe-e731-4ee8-8ce8-f97bf136eb10)
 
 ## Unit Test Results
 ![unit_test_results](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/f934d8df-7a6b-4f6f-b552-08b75f88ec3b)
