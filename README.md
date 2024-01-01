@@ -43,7 +43,10 @@ with various parameters.
 ![unit_test_results](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/f934d8df-7a6b-4f6f-b552-08b75f88ec3b)
 
 ## Data Output
-
+- One-Way Flight:
+ - ![one-way_flight](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/061867ef-2ed1-470e-93d8-33dad2e741bd)
+- Round-Trip Flight:
+ - ![round_trap_flight](https://github.com/nuricanozturk01/Flight-Search-API/assets/62218588/2994d8db-c5ba-4a64-b5d2-0c64e2e94b76)
 
 ## Database Design
 
