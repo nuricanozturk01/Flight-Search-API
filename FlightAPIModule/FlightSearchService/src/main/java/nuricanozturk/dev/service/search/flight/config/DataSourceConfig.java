@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import java.nio.file.Paths;
 
-//@Configuration
+@Configuration
 public class DataSourceConfig {
 
     @Value("${test.h2.db_name}")

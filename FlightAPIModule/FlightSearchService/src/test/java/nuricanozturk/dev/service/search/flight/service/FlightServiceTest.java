@@ -2,8 +2,7 @@ package nuricanozturk.dev.service.search.flight.service;
 
 import callofproject.dev.library.exception.service.DataServiceException;
 import nuricanozturk.dev.data.common.dto.FlightsResponseDTO;
-import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedComparePriceDTO;
-import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedDTO;
+import nuricanozturk.dev.data.common.dto.request.*;
 import nuricanozturk.dev.data.flight.entity.Airport;
 import nuricanozturk.dev.data.flight.entity.Flight;
 import nuricanozturk.dev.service.search.flight.DatabaseCleaner;

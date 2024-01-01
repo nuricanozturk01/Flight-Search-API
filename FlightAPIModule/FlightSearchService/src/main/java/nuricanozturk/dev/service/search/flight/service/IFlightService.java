@@ -1,8 +1,7 @@
 package nuricanozturk.dev.service.search.flight.service;
 
 import nuricanozturk.dev.data.common.dto.ResponseDTO;
-import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedComparePriceDTO;
-import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedDTO;
+import nuricanozturk.dev.data.common.dto.request.*;
 import nuricanozturk.dev.data.flight.entity.Flight;
 
 import java.util.Optional;

@@ -1,5 +1,7 @@
 package nuricanozturk.dev.service.search.flight.controller;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperties;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import nuricanozturk.dev.data.common.dto.ErrorMessage;
 import nuricanozturk.dev.data.common.dto.request.CreateAirportDTO;
@@ -44,7 +46,9 @@ public class AdminController
      * @param createFlightDTO The data transfer object containing the flight details for creation.
      * @return A ResponseEntity containing the result of the creation operation.
      */
+
     @PostMapping("create/flight")
+
     public ResponseEntity<Object> createFlight(@RequestBody CreateFlightDTO createFlightDTO)
     {
         return subscribe(() -> ok(m_adminService.createFlight(createFlightDTO)),
