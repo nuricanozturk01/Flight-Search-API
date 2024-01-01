@@ -20,7 +20,10 @@ import static nuricanozturk.dev.data.flight.util.RepositoryBeanName.AIRPORT_REPO
 import static nuricanozturk.dev.service.search.flight.util.FlightServiceBeanName.FLIGHT_SERVICE_BEAN_NAME;
 
 /**
- * FlightSearchServiceApplication
+ * FlightSearchServiceApplication is the main entry point for the flight search service application.
+ * It configures Spring Boot application settings, security, repositories, and entity scanning.
+ * It also implements ApplicationRunner to perform any actions on application startup.
+ * <p>
  * Some classes in callofproject package are inspired from C and System Programmers Association's Java Course.
  */
 @SpringBootApplication
@@ -40,17 +43,35 @@ public class FlightSearchServiceApplication implements ApplicationRunner
     private final ICustomerRepository m_customerRepository;
     private final PasswordEncoder m_passwordEncoder;
 
+    /**
+     * Constructs the FlightSearchServiceApplication with necessary dependencies.
+     *
+     * @param customerRepository The repository for customer data access.
+     * @param passwordEncoder    The encoder for password encryption.
+     */
     public FlightSearchServiceApplication(ICustomerRepository customerRepository, PasswordEncoder passwordEncoder)
     {
         m_customerRepository = customerRepository;
         m_passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * The main method to start the Spring Boot application.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args)
     {
         SpringApplication.run(FlightSearchServiceApplication.class, args);
     }
 
+    /**
+     * Runs specific actions on application startup.
+     * This method checks for the existence of an admin user and creates one if not present.
+     *
+     * @param args Application arguments.
+     * @throws Exception if an error occurs during startup actions.
+     */
     @Override
     public void run(ApplicationArguments args) throws Exception
     {

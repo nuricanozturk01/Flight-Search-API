@@ -4,30 +4,43 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import nuricanozturk.dev.data.common.dto.ErrorMessage;
 import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedComparePriceDTO;
 import nuricanozturk.dev.data.common.dto.request.SearchFullQualifiedDTO;
-import nuricanozturk.dev.service.search.flight.service.impl.FlightService;
+import nuricanozturk.dev.service.search.flight.service.IFlightService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import static callofproject.dev.library.exception.util.ExceptionUtil.subscribe;
 import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
+/**
+ * FlightController is a REST controller responsible for handling flight-related API requests.
+ * It provides endpoints for searching and retrieving flight information based on various criteria.
+ */
 @RestController
 @RequestMapping("/api/flight")
 @SecurityRequirement(name = "Authorization")
 public class FlightController
 {
+    private final IFlightService m_flightService;
 
-    private final FlightService m_flightService;
-
-    public FlightController(FlightService flightService)
+    /**
+     * Constructs a FlightController with the specified flight service.
+     *
+     * @param flightService The service to handle flight operations.
+     */
+    public FlightController(IFlightService flightService)
     {
         m_flightService = flightService;
     }
 
+    /**
+     * Finds flights based on fully qualified search criteria including locations and dates.
+     *
+     * @param searchFullQualifiedDTO The DTO containing search criteria.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/full-qualified")
     public ResponseEntity<Object> findFlightsWithFullQualified(@RequestBody SearchFullQualifiedDTO searchFullQualifiedDTO)
     {
@@ -35,6 +48,14 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights between specified departure and arrival locations.
+     *
+     * @param fromCity The code of the departure city.
+     * @param toCity   The code of the arrival city.
+     * @param page     The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/by-airports")
     public ResponseEntity<Object> findFlightsByLocations(@RequestParam("from") String fromCity,
                                                          @RequestParam("to") String toCity,
@@ -44,6 +65,12 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights based on airport codes, departure date, and a price range.
+     *
+     * @param dto The DTO containing the search criteria.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/airport-date-price-range")
     public ResponseEntity<Object> findByAirportAndDepartureDateAndPriceBetween(@RequestBody SearchFullQualifiedComparePriceDTO dto)
     {
@@ -52,6 +79,12 @@ public class FlightController
 
     }
 
+    /**
+     * Finds a flight by its unique identifier.
+     *
+     * @param id The UUID of the flight.
+     * @return ResponseEntity with the flight details or error message.
+     */
     @GetMapping("/search/id")
     public ResponseEntity<Object> findFlightById(@RequestParam UUID id)
     {
@@ -59,6 +92,13 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights arriving at a specified airport.
+     *
+     * @param arrivalAirport The code of the arrival airport.
+     * @param page           The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/arrival-airport")
     public ResponseEntity<Object> findFlightsByArrivalAirport(@RequestParam("arrival") String arrivalAirport, @RequestParam(value = "p", defaultValue = "1") int page)
     {
@@ -66,7 +106,13 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
-
+    /**
+     * Finds flights departing from a specified airport.
+     *
+     * @param from The code of the departure airport.
+     * @param page The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/departure-airport")
     public ResponseEntity<Object> findFlightsByDepartureAirport(@RequestParam String from, @RequestParam(value = "p", defaultValue = "1") int page)
     {
@@ -74,6 +120,12 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights based on all airports, dates, and within a price range.
+     *
+     * @param dto The DTO containing the search criteria.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/flights/airport-date-price-range")
     public ResponseEntity<Object> findByAllAirportAndAllDateAndPriceBetween(@RequestBody SearchFullQualifiedComparePriceDTO dto)
     {
@@ -81,6 +133,15 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights between two locations on a specific date.
+     *
+     * @param from The departure location.
+     * @param to   The arrival location.
+     * @param date The date for the flights.
+     * @param page The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/by-origin-destination-date")
     public ResponseEntity<Object> findFlightsByFromAndToAndDateBetween(@RequestParam String from, @RequestParam String to, @RequestParam String date,
                                                                        @RequestParam(value = "p", defaultValue = "1") int page)
@@ -89,6 +150,14 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights departing between a specified date range.
+     *
+     * @param start The start date.
+     * @param end   The end date.
+     * @param page  The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/by-departure-date-range")
     public ResponseEntity<Object> findFlightsByDepartureDateBetween(@RequestParam String start, @RequestParam String end,
                                                                     @RequestParam(value = "p", defaultValue = "1") int page)
@@ -97,6 +166,15 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights departing from a specific airport within a date range.
+     *
+     * @param from  The code of the departure airport.
+     * @param start The start date.
+     * @param end   The end date.
+     * @param page  The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/departure-airport-date-range")
     public ResponseEntity<Object> findFlightsByDepartureAirportAndDepartureDateBetween(@RequestParam String from, @RequestParam String start,
                                                                                        @RequestParam String end, @RequestParam(value = "p", defaultValue = "1") int page)
@@ -105,6 +183,14 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights within a specific price range.
+     *
+     * @param minPrice The minimum price.
+     * @param maxPrice The maximum price.
+     * @param page     The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/price-range")
     public ResponseEntity<Object> findFlightsByPriceBetween(@RequestParam("min") double minPrice, @RequestParam("max") double maxPrice,
                                                             @RequestParam(value = "p", defaultValue = "1") int page)
@@ -113,6 +199,14 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights departing from a specific airport on a specific date.
+     *
+     * @param from The code of the departure airport.
+     * @param date The specific date.
+     * @param page The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/departure-airport-specific-date")
     public ResponseEntity<Object> findFlightsByDepartureAirportAndDepartureDate(@RequestParam String from, @RequestParam String date,
                                                                                 @RequestParam(value = "p", defaultValue = "1") int page)
@@ -121,6 +215,14 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights arriving at a specific airport on a specific date.
+     *
+     * @param arrivalAirport The code of the arrival airport.
+     * @param date           The specific date.
+     * @param page           The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/arrival-airport-specific-date")
     public ResponseEntity<Object> findFlightsByArrivalAirportAndDepartureDate(@RequestParam("arrival") String arrivalAirport, @RequestParam String date,
                                                                               @RequestParam(value = "p", defaultValue = "1") int page)
@@ -129,6 +231,15 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights between two locations on a specific date.
+     *
+     * @param from The departure location.
+     * @param to   The arrival location.
+     * @param date The specific date.
+     * @param page The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/from-to-specific-date")
     public ResponseEntity<Object> findFlightsByFromAndToAndFromDate(@RequestParam String from, @RequestParam String to, @RequestParam String date,
                                                                     @RequestParam(value = "p", defaultValue = "1") int page)
@@ -137,6 +248,16 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds the cheapest flights within a date range between two locations.
+     *
+     * @param from  The departure location.
+     * @param to    The arrival location.
+     * @param start The start date.
+     * @param end   The end date.
+     * @param page  The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/cheapest-from-to-date-range")
     public ResponseEntity<Object> findCheapestFlightsWithinRange(@RequestParam String from, @RequestParam String to, @RequestParam String start,
                                                                  @RequestParam String end, @RequestParam(value = "p", defaultValue = "1") int page)
@@ -145,6 +266,15 @@ public class FlightController
                 ex -> badRequest().body(new ErrorMessage(false, ex.getMessage())));
     }
 
+    /**
+     * Finds flights within a city and date range.
+     *
+     * @param city  The city code for either departure or arrival.
+     * @param start The start date.
+     * @param end   The end date.
+     * @param page  The page number for pagination.
+     * @return ResponseEntity with the search results or error message.
+     */
     @GetMapping("/search/city-date-range")
     public ResponseEntity<Object> findFlightsCityDateRange(@RequestParam String city, @RequestParam String start, @RequestParam String end,
                                                            @RequestParam(value = "p", defaultValue = "1") int page)

@@ -96,5 +96,11 @@ public interface IAdminService
      */
     void saveAllFlights(List<FlightDTO> flights);
 
+    /**
+     * Creates a new flight based on the provided CreateFlightDTO.
+     *
+     * @param roundTripFlights the DTO containing the details of the flight to be created
+     * @throws DataServiceException if there's an issue during the flight creation process
+     */
     void saveAllFlightsPair(List<Pair<FlightDTO, FlightDTO>> roundTripFlights);
 }

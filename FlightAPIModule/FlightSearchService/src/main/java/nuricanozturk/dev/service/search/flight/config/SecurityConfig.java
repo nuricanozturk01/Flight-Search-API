@@ -91,7 +91,7 @@ public class SecurityConfig
         requests
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/dev/h2/**").permitAll()
+                //.requestMatchers("/dev/h2/**").permitAll() // For production
                 .requestMatchers(antMatcher("/api-docs/**")).permitAll()
                 .requestMatchers("/api/flight/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/api/admin/**").hasRole("ADMIN");

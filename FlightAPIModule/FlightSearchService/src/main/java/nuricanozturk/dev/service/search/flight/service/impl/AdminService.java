@@ -88,39 +88,6 @@ public class AdminService implements IAdminService
         }
     }
 
-    private void checkCreateFlightDTO(CreateFlightDTO createFlightDTO)
-    {
-        if (createFlightDTO.departureAirport() == null)
-            throw new DataServiceException("Departure Airport is required!");
-        if (createFlightDTO.arrivalAirport() == null)
-            throw new DataServiceException("Arrival Airport is required!");
-        if (createFlightDTO.departureDate() == null)
-            throw new DataServiceException("Departure Date is required!");
-        if (createFlightDTO.departureTime() == null)
-            throw new DataServiceException("Departure Time is required!");
-        if (createFlightDTO.price() <= 0)
-            throw new DataServiceException("Price is must be greater thane 0!");
-    }
-
-    private Optional<Flight> createReturnFlight(Optional<CreateFlightDTO> createFlightDTO)
-    {
-        if (createFlightDTO.isEmpty())
-            return Optional.empty();
-        var departureAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.get().departureAirport()));
-        var arrivalAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.get().arrivalAirport()));
-
-        var flight = new Flight.Builder()
-                .withArrivalAirport(arrivalAirport)
-                .withDepartureAirport(departureAirport)
-                .withDepartureTime(createFlightDTO.get().departureTime())
-                .withDepartureDate(createFlightDTO.get().departureDate())
-                .withReturnDate(createFlightDTO.get().returnDate().orElse(null))
-                .withReturnTime(createFlightDTO.get().returnTime().orElse(null))
-                .withPrice(createFlightDTO.get().price())
-                .build();
-
-        return of(flight);
-    }
 
     /**
      * Creates a new flight based on the provided CreateFlightDTO.
@@ -198,19 +165,6 @@ public class AdminService implements IAdminService
         return new ResponseDTO(null, null, null, "Success", updatedFlight);
     }
 
-    private void checkUpdateFlightDTO(UpdateFlightDTO updateFlightDTO)
-    {
-        if (updateFlightDTO.departureAirport() == null)
-            throw new DataServiceException("Departure Airport is required!");
-        if (updateFlightDTO.arrivalAirport() == null)
-            throw new DataServiceException("Arrival Airport is required!");
-        if (updateFlightDTO.departureDate() == null)
-            throw new DataServiceException("Departure Date is required!");
-        if (updateFlightDTO.departureTime() == null)
-            throw new DataServiceException("Departure Time is required!");
-        if (updateFlightDTO.price() <= 0)
-            throw new DataServiceException("Price is must be greater thane 0!");
-    }
 
     /**
      * Updates an existing airport with the provided details.
@@ -357,5 +311,72 @@ public class AdminService implements IAdminService
                 .withReturnFlight(flightDTO.getReturnFlight() == null ? null : toFlightForCreate(flightDTO.getReturnFlight()))
                 .withPrice(flightDTO.getPrice())
                 .build();
+    }
+
+    /**
+     * Validates the CreateFlightDTO object to ensure all required fields are present and valid.
+     *
+     * @param createFlightDTO The CreateFlightDTO object to validate.
+     * @throws DataServiceException If any required field is missing or invalid.
+     */
+
+    private void checkCreateFlightDTO(CreateFlightDTO createFlightDTO)
+    {
+        if (createFlightDTO.departureAirport() == null)
+            throw new DataServiceException("Departure Airport is required!");
+        if (createFlightDTO.arrivalAirport() == null)
+            throw new DataServiceException("Arrival Airport is required!");
+        if (createFlightDTO.departureDate() == null)
+            throw new DataServiceException("Departure Date is required!");
+        if (createFlightDTO.departureTime() == null)
+            throw new DataServiceException("Departure Time is required!");
+        if (createFlightDTO.price() <= 0)
+            throw new DataServiceException("Price is must be greater thane 0!");
+    }
+
+    /**
+     * Creates a return flight based on the provided CreateFlightDTO, if available.
+     *
+     * @param createFlightDTO Optional DTO containing the return flight details.
+     * @return An Optional containing the created return Flight, or empty if the DTO is not present.
+     */
+    private Optional<Flight> createReturnFlight(Optional<CreateFlightDTO> createFlightDTO)
+    {
+        if (createFlightDTO.isEmpty())
+            return Optional.empty();
+        var departureAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.get().departureAirport()));
+        var arrivalAirport = m_flightServiceHelper.saveAirport(convert(createFlightDTO.get().arrivalAirport()));
+
+        var flight = new Flight.Builder()
+                .withArrivalAirport(arrivalAirport)
+                .withDepartureAirport(departureAirport)
+                .withDepartureTime(createFlightDTO.get().departureTime())
+                .withDepartureDate(createFlightDTO.get().departureDate())
+                .withReturnDate(createFlightDTO.get().returnDate().orElse(null))
+                .withReturnTime(createFlightDTO.get().returnTime().orElse(null))
+                .withPrice(createFlightDTO.get().price())
+                .build();
+
+        return of(flight);
+    }
+
+    /**
+     * Validates the UpdateFlightDTO object to ensure all required fields are present and valid.
+     *
+     * @param updateFlightDTO The UpdateFlightDTO object to validate.
+     * @throws DataServiceException If any required field is missing or invalid.
+     */
+    private void checkUpdateFlightDTO(UpdateFlightDTO updateFlightDTO)
+    {
+        if (updateFlightDTO.departureAirport() == null)
+            throw new DataServiceException("Departure Airport is required!");
+        if (updateFlightDTO.arrivalAirport() == null)
+            throw new DataServiceException("Arrival Airport is required!");
+        if (updateFlightDTO.departureDate() == null)
+            throw new DataServiceException("Departure Date is required!");
+        if (updateFlightDTO.departureTime() == null)
+            throw new DataServiceException("Departure Time is required!");
+        if (updateFlightDTO.price() <= 0)
+            throw new DataServiceException("Price is must be greater thane 0!");
     }
 }

@@ -9,7 +9,7 @@ public interface ISchedulerService
 {
     /**
      * Schedules the flight search operation to run at specific times.
-     * This method is scheduled to run daily at 03:00 AM and 15:00 PM Istanbul time.
+     * This method is scheduled to run daily at 03:00 AM Istanbul time.
      * It retrieves generated flights from the flight provider service and saves them using the admin service.
      */
     void scheduleFlightSearch();
