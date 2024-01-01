@@ -11,6 +11,7 @@ with various parameters.
 ## Documentation Link (Java-doc):
 - **Java-Doc**: https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
 - **Swagger**: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
+  - **Flight Provider**: https://flight-provider-api.azurewebsites.net/swagger-ui/index.html#/
 
 ## Technologies
 
