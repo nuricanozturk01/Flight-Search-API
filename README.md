@@ -9,12 +9,8 @@ project. This service provides flight information to the **FlightSearchAPI** at 
 information is generated using the "Faker" API. Thanks to this FlightDataProvider service, users can perform searches
 with various parameters.
 ## Documentation Link (Java-doc):
-- https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
-## Deployment:
-
-- I deployed this project to Azure.
-  You can access the API from the following link: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
-- The data is uploaded every hour. Over time, the database will become full
+- **Java-Doc**: https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
+- **Swagger**: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
 
 ## Technologies
 
