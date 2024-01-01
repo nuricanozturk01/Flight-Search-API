@@ -8,7 +8,11 @@ this
 project. This service provides flight information to the **FlightSearchAPI** at a specific time every day. The flight
 information is generated using the "Faker" API. Thanks to this FlightDataProvider service, users can perform searches
 with various parameters.
-## Documentation Link (Java-doc):
+### Description:
+- Some classes in callofproject packages are **written by me** and some of those **inspired** from *'C and System Programmers Association'* Java Course.
+- Call-Of-Project is my graduation project.
+
+## Documentation:
 - **Java-Doc**: https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
 - **Swagger**: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
   - **Flight Provider**: https://flight-provider-api.azurewebsites.net/swagger-ui/index.html#/
