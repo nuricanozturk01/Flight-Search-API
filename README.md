@@ -12,7 +12,7 @@ with various parameters.
 - Some classes in callofproject packages are **written by me** and some of those **inspired** from *'C and System Programmers Association'* Java Course.
 - Call-Of-Project is my graduation project.
 
-## Documentation:
+## Documentation: (Free Services may loading slow)
 - **Java-Doc**: https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
 - **Swagger**: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
   - **Flight Provider**: https://flight-provider-api.azurewebsites.net/swagger-ui/index.html#/
