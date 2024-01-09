@@ -2,8 +2,7 @@
 
 ## Overview
 
-The **Amadeus Travel to Future Program** is an API developed for flight search purposes. With this API, you can perform
-various flight searches and CRUD operations. Additionally, I have created a service called **FlightDataProvider** for
+With this API, you can perform various flight searches and CRUD operations. Additionally, I have created a service called **FlightDataProvider** for
 this
 project. This service provides flight information to the **FlightSearchAPI** at a specific time every day. The flight
 information is generated using the "Faker" API. Thanks to this FlightDataProvider service, users can perform searches
@@ -14,8 +13,6 @@ with various parameters.
 
 ## Documentation: (Free Services may loading slow)
 - **Java-Doc**: https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
-- **Swagger**: https://flight-searh-service.azurewebsites.net/swagger-ui/index.html#
-  - **Flight Provider**: https://flight-provider-api.azurewebsites.net/swagger-ui/index.html#/
 
 ## Technologies
 
