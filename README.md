@@ -11,9 +11,6 @@ with various parameters.
 - Some classes in callofproject packages are **written by me** and some of those **inspired** from *'C and System Programmers Association'* Java Course.
 - Call-Of-Project is my graduation project.
 
-## Documentation: (Free Services may loading slow)
-- **Java-Doc**: https://nuricanozturk01.github.io/Flight-Search-API-JavaDoc/
-
 ## Technologies
 
 - **Spring Boot**: Framework for creating web applications.
